@@ -11,11 +11,33 @@ tabular recipe notation table at `/recipe-cards/<slug>`.
 ## 1. Read the source
 
 - **Image**: read the image file and transcribe the title, every ingredient
-  with its amount, and every instruction. If a word is unclear, choose the
-  likely reading and mention it to the user.
+  with its amount, and every instruction.
 - **URL**: fetch the page and pull out the title, ingredients, and method.
   Ignore the story, ads, and comments. Put the URL in `source`.
 - **Text**: use the pasted recipe as given.
+
+Set `source` whenever the recipe has one: the URL it came from, or the book
+or person it's credited to. A URL source shows as a link at the bottom of
+the card.
+
+### Ask, don't guess
+
+If anything in the source is ambiguous, ask the user before writing the
+file (use the AskUserQuestion tool, batching related questions into one
+call). Do not pick a reading yourself. Examples:
+
+- A word, number, or fraction you can't read clearly.
+- The ingredient list and the method disagree (say, the list has cream but
+  the method says milk).
+- An ingredient is listed but never used in the method, or used in the
+  method but missing from the list.
+- It's unclear which step an ingredient goes into, or how a shared
+  ingredient is split between steps.
+- Crossed-out or handwritten additions on a card, where it's unclear
+  whether they count.
+
+Offer the likely readings as options. Once answered, follow the user's
+choice; don't record the ambiguity on the card unless they ask you to.
 
 ## 2. Model it as a tree
 
@@ -32,8 +54,8 @@ Rules:
   used.
 - If one ingredient is used in two places (for example, oil for a marinade
   and more oil for frying), split it into two ingredient entries. Make the
-  amounts add up to the original, and add a `notes` entry saying how you
-  split it.
+  amounts add up to the original. If the source doesn't say how to split
+  it, ask the user.
 - Put the step result that the new ingredients are added to *first* in
   `inputs`, then the new ingredients in the order the recipe adds them.
 - When the same ingredient appears more than once (a split as above), try to
@@ -55,33 +77,49 @@ Rules:
 - Do not invent ingredients, amounts, or steps. If the source is vague (for
   example "a little salt"), keep it vague (`prep: to taste`).
 
+### No notes below the card
+
+Everything goes in the table. There is no `notes` list. Put each extra piece
+of information on the step or ingredient it is about:
+
+- **Short** (a few words): put it in the table text itself, as a step's
+  `detail` or an ingredient's `prep`.
+- **Long** (tips, substitutions, warnings, a sentence or more): put it in
+  `info` on that step or ingredient. It shows as a small "i" button that
+  opens a popup when tapped.
+- Information about the whole recipe (author, total time, what was left
+  out) goes in the top-level `info`, which puts the button in the title row.
+
 ## 3. Schema
 
 ```yaml
 title: Lemon Bars              # required
 yield: 32 bars                 # optional
 source: https://example.com/x  # optional: URL, book, or person
-notes:                         # optional list of strings
-  - Anything that doesn't fit the table.
+info: Whole-recipe note, in a popup from the title row.  # optional
 recipe:                        # required; must be a step (the final one)
   step: cool and cut           # short label shown in the cell
   detail: optional smaller text shown under the label
+  info: optional longer text, shown in a popup when tapped
   inputs:                      # required, non-empty, in table order
     - step: 350°F for 20 min.
       inputs:
-        - { amount: 1-3/4 cup, ingredient: all purpose flour }
+        - { amount: 1-3/4 cup, ingredient: all purpose flour, info: "Bread flour also works." }
         - { amount: 1, ingredient: white onion, prep: diced }
         - { ingredient: salt, prep: to taste }   # amount optional
 ```
 
-Ingredient keys: `ingredient` (required), `amount`, `prep`. They render as
-"amount ingredient, prep". Step keys: `step`, `inputs`, `detail`. No other
-keys are allowed.
+Ingredient keys: `ingredient` (required), `amount`, `prep`, `info`. They
+render as "amount ingredient, prep" plus an info button. Step keys: `step`,
+`inputs`, `detail`, `info`. Top-level keys: `title`, `yield`, `source`,
+`info`, `recipe`. No other keys are allowed.
 
 Use flow-style `{ ... }` maps for ingredients to keep deep trees readable.
 Quote values that contain `: ` or start with a YAML special character.
 
-See `recipes/saag-paneer.yaml` for a complete example.
+See `recipes/saag-paneer.yaml` for a complete example, and
+`recipes/pasta-with-butternut-squash-kale-and-brown-butter.yaml` for `info`
+popups.
 
 ## 4. Save and check
 
@@ -93,5 +131,4 @@ See `recipes/saag-paneer.yaml` for a complete example.
 3. Optionally preview it with `python3 -m http.server` from the repo root,
    then open `http://localhost:8000/recipe.html?r=<slug>`. The index page and
    `/recipe-cards/<slug>` URLs need Jekyll, so they only work on GitHub Pages.
-4. Tell the user the file path. Mention any readings you guessed and any
-   ingredients you split.
+4. Tell the user the file path and mention any ingredients you split.

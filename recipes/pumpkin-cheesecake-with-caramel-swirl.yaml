@@ -1,11 +1,7 @@
 title: Pumpkin Cheesecake with Caramel Swirl
 yield: 10 servings
 source: Teresa Dion
-notes:
-  - The 9 Tbs. of whipping cream is split, with 4 Tbs. for the filling and 5 Tbs. for the topping.
-  - After beating the cream cheese and sugar, 3/4 cup of that mixture is set aside and chilled for the topping. It appears as "reserved cream cheese mixture" in the topping step.
-  - The caramel sauce and the caramel swirl steps are crossed out on the original card, so they are left out here.
-  - A handwritten note on the card gives 1/2 tsp. each of ground cloves, ginger, and nutmeg as an alternative to the allspice.
+info: The caramel sauce and the caramel swirl steps are crossed out on the original card, so they are left out here.
 
 recipe:
   step: release pan sides
@@ -51,8 +47,8 @@ recipe:
                                     - { amount: 1-1/2 cup, ingredient: canned solid pack pumpkin }
                                     - { amount: 1 tsp., ingredient: ground cinnamon }
                                     - { amount: 1 tsp., ingredient: ground allspice, prep: "or 1/2 tsp. each ground cloves, ginger, and nutmeg" }
-                                    - { amount: 4 Tbs., ingredient: whipping cream }
+                                    - { amount: 4 Tbs., ingredient: whipping cream, info: "The recipe uses 9 Tbs. whipping cream in all: 4 Tbs. in the filling and 5 Tbs. in the topping." }
         - step: stir to combine
           inputs:
-            - { amount: 5 Tbs., ingredient: whipping cream }
-            - { amount: 3/4 cup, ingredient: reserved cream cheese mixture, prep: brought to room temperature }
+            - { amount: 5 Tbs., ingredient: whipping cream, info: "The recipe uses 9 Tbs. whipping cream in all: 4 Tbs. in the filling and 5 Tbs. in the topping." }
+            - { amount: 3/4 cup, ingredient: reserved cream cheese mixture, prep: brought to room temperature, info: "3/4 cup of the beaten cream cheese and sugar, set aside and chilled before the pumpkin goes in." }

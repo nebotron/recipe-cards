@@ -1,12 +1,9 @@
 title: Currant Scones
 yield: 8 scones
-notes:
-  - The method says to brush with milk, but the ingredient list's glaze uses 1 Tbs. cream; the card follows the ingredient list.
-  - While baking, keep an oven-proof dish with 1/4 cup water on the bottom rack of the oven.
-
 recipe:
   step: 375°F for 15–16 min.
   detail: on an oiled baking sheet, until golden on top
+  info: While baking, keep an oven-proof dish with 1/4 cup water on the bottom rack of the oven.
   inputs:
     - step: brush and sprinkle
       inputs:
@@ -38,5 +35,5 @@ recipe:
                             - { amount: 1, ingredient: egg }
                             - { amount: 1/2 cup, ingredient: cream }
                     - { amount: 1/2 cup, ingredient: dried currants }
-        - { amount: 1 Tbs., ingredient: cream }
+        - { amount: 1 Tbs., ingredient: cream, info: "The method says to brush with milk, but the ingredient list's glaze uses 1 Tbs. cream. The card follows the ingredient list." }
         - { ingredient: sparkly sugar }

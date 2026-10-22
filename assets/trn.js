@@ -17,6 +17,12 @@
     return node && typeof node === "object" && "step" in node;
   }
 
+  // A tappable "i" that opens the longer note in a popup (see recipe-page.js).
+  function infoButton(info) {
+    return info ? " <button type=\"button\" class=\"info\" aria-label=\"More info\" data-info=\"" +
+      esc(info) + "\">i</button>" : "";
+  }
+
   function ingredientText(node) {
     var text = [node.amount, node.ingredient].filter(Boolean).join(" ");
     if (node.prep) text += ", " + node.prep;
@@ -64,7 +70,8 @@
     cells.forEach(function (c) { byRow[c.firstRow].push(c); });
 
     var html = "<table class=\"trn\"><tr><th colspan=\"" + (root.col + 1) + "\">" + esc(recipe.title || "") +
-      (recipe.yield ? " <span class=\"yield\">(" + esc(recipe.yield) + ")</span>" : "") + "</th></tr>";
+      (recipe.yield ? " <span class=\"yield\">(" + esc(recipe.yield) + ")</span>" : "") +
+      infoButton(recipe.info) + "</th></tr>";
     byRow.forEach(function (row) {
       row.sort(function (a, b) { return a.col - b.col; });
       html += "<tr>";
@@ -72,9 +79,10 @@
         var attrs = (c.rows > 1 ? " rowspan=\"" + c.rows + "\"" : "") + (c.span > 1 ? " colspan=\"" + c.span + "\"" : "");
         if (isStep(c.node)) {
           html += "<td class=\"a\"" + attrs + ">" + esc(c.node.step) +
+            infoButton(c.node.info) +
             (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") + "</td>";
         } else {
-          html += "<td class=\"i\"" + attrs + ">" + esc(ingredientText(c.node)) + "</td>";
+          html += "<td class=\"i\"" + attrs + ">" + esc(ingredientText(c.node)) + infoButton(c.node.info) + "</td>";
         }
       });
       html += "</tr>";

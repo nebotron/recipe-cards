@@ -41,7 +41,32 @@ table.trn td { border: 1px solid var(--line); padding: 4px 8px; vertical-align: 
 table.trn td.i { background: var(--cell); white-space: nowrap; }
 table.trn td.a { background: var(--action); text-align: center; max-width: 11em; }
 table.trn td.a .detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.notes, .source { font-size: 12px; color: var(--muted); max-width: 60em; }
+button.info {
+  font: italic bold 11px Georgia, serif;
+  width: 1.6em;
+  height: 1.6em;
+  padding: 0;
+  margin-left: 2px;
+  vertical-align: 1px;
+  color: var(--link);
+  background: var(--cell);
+  border: 1px solid var(--link);
+  border-radius: 50%;
+  cursor: pointer;
+}
+dialog.info-popup {
+  max-width: min(28em, calc(100vw - 32px));
+  box-sizing: border-box;
+  padding: 12px 16px;
+  color: var(--fg);
+  background: var(--cell);
+  border: 2px solid var(--line);
+}
+dialog.info-popup::backdrop { background: rgba(0, 0, 0, 0.4); }
+dialog.info-popup p { margin: 0 0 12px; line-height: 1.4; }
+dialog.info-popup form { text-align: right; }
+dialog.info-popup form button { font: inherit; padding: 4px 12px; }
+.source { font-size: 12px; color: var(--muted); max-width: 60em; }
 .error { color: #c00; white-space: pre-wrap; }
 ul.recipes li { margin: 4px 0; }
 .search {
@@ -65,5 +90,6 @@ ul.recipes { padding-left: 20px; }
   table.trn td { padding: 4px 6px; }
   table.trn td.i { white-space: normal; min-width: 7em; }
   table.trn td.a { max-width: 8em; }
-  .notes, .source { font-size: 14px; overflow-wrap: anywhere; }
+  .source { font-size: 14px; overflow-wrap: anywhere; }
+  button.info { font-size: 13px; }
 }

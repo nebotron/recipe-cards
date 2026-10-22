@@ -28,6 +28,23 @@
     request();
     document.addEventListener("visibilitychange", request);
   }
+  // Info buttons in the table carry their text in data-info; tapping one shows
+  // it in a popup. Tapping outside the popup, or its close button, dismisses it.
+  function showInfoOnTap() {
+    var dialog = document.createElement("dialog");
+    dialog.className = "info-popup";
+    dialog.innerHTML = "<p></p><form method=\"dialog\"><button>Close</button></form>";
+    document.body.appendChild(dialog);
+    card.addEventListener("click", function (e) {
+      var button = e.target.closest("button.info");
+      if (!button) return;
+      dialog.querySelector("p").textContent = button.getAttribute("data-info");
+      dialog.showModal();
+    });
+    dialog.addEventListener("click", function (e) {
+      if (e.target === dialog) dialog.close();
+    });
+  }
   fetch(root + "recipes/" + slug + ".yaml").then(function (r) {
     if (r.status === 404) throw new Error("No recipe named \"" + slug + "\".");
     if (!r.ok) throw new Error("recipes/" + slug + ".yaml: HTTP " + r.status);
@@ -37,15 +54,13 @@
     Recent.touch(slug);
     document.title = data.title || slug;
     var html = TRN.render(data);
-    if (data.notes && data.notes.length) {
-      html += "<div class=\"notes\"><p>" + data.notes.map(esc).join("</p><p>") + "</p></div>";
-    }
     if (data.source) {
       var src = /^https?:\/\//.test(data.source)
         ? "<a href=\"" + esc(data.source) + "\">" + esc(data.source) + "</a>" : esc(data.source);
       html += "<p class=\"source\">Source: " + src + "</p>";
     }
     card.innerHTML = html;
+    showInfoOnTap();
     keepAwake();
   }).catch(function (e) {
     card.innerHTML = "<p class=\"error\">" + esc(e.message) + "</p>";

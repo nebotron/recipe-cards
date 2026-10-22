@@ -9,9 +9,9 @@ import sys
 
 import yaml
 
-TOP_KEYS = {"title", "yield", "source", "notes", "recipe"}
-STEP_KEYS = {"step", "detail", "inputs"}
-INGREDIENT_KEYS = {"amount", "ingredient", "prep"}
+TOP_KEYS = {"title", "yield", "source", "info", "recipe"}
+STEP_KEYS = {"step", "detail", "info", "inputs"}
+INGREDIENT_KEYS = {"amount", "ingredient", "prep", "info"}
 
 
 def check_node(node, path, errors, depth, lines):
@@ -27,7 +27,7 @@ def check_node(node, path, errors, depth, lines):
         if not isinstance(inputs, list) or not inputs:
             errors.append(f"{path}: step needs a non-empty 'inputs' list")
             inputs = []
-        lines.append(f"{pad}[{node['step']}]")
+        lines.append(f"{pad}[{node['step']}]" + (" (i)" if node.get("info") else ""))
         for i, child in enumerate(inputs):
             check_node(child, f"{path}.inputs[{i}]", errors, depth + 1, lines)
     elif "ingredient" in node:
@@ -37,6 +37,8 @@ def check_node(node, path, errors, depth, lines):
         text = " ".join(str(node[k]) for k in ("amount", "ingredient") if node.get(k))
         if node.get("prep"):
             text += f", {node['prep']}"
+        if node.get("info"):
+            text += " (i)"
         lines.append(f"{pad}{text}")
     else:
         errors.append(f"{path}: needs either 'step' or 'ingredient'")
@@ -48,13 +50,13 @@ def validate(path):
         data = yaml.safe_load(f)
     if not isinstance(data, dict):
         return [f"{path}: top level must be a mapping"], lines
-    extra = set(data) - TOP_KEYS
+    extra = set(data) - TOP_KEYS - {"notes"}
     if extra:
         errors.append(f"unknown top-level keys {sorted(extra)}")
     if not data.get("title"):
         errors.append("missing 'title'")
-    if "notes" in data and not isinstance(data["notes"], list):
-        errors.append("'notes' must be a list")
+    if "notes" in data:
+        errors.append("'notes' is not supported; put it in the table or in an 'info' popup")
     if "recipe" not in data:
         errors.append("missing 'recipe'")
     elif "step" not in (data["recipe"] or {}):

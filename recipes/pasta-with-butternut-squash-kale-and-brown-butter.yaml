@@ -1,11 +1,7 @@
 title: Pasta With Butternut Squash, Kale and Brown Butter
 yield: 4 servings
 source: https://cooking.nytimes.com/recipes/1023461
-notes:
-  - By Ali Slagle for NYT Cooking. Total time 30 minutes.
-  - The squash is browned in two batches in a single layer, each with half the oil and a pinch of salt. If there isn't room for the second batch, set the first aside on a plate and return it before adding the butter.
-  - If you're using a dark pot, spoon some butter onto the squash to check that it's speckled brown.
-  - "Substitutions: another nutty spice for the garam masala (five spice, turmeric with chile powder, or cinnamon with crushed fennel seeds); regular pasta for whole-wheat; chickpeas or carrot for the squash; brussels sprouts, broccolini or mature spinach for the kale."
+info: By Ali Slagle for NYT Cooking. Total time 30 minutes.
 
 recipe:
   step: serve
@@ -23,15 +19,17 @@ recipe:
                       inputs:
                         - step: medium-low 1–4 min.
                           detail: stir until butter is golden, nutty and foaming
+                          info: If you're using a dark pot, spoon some butter onto the squash to check that it's speckled brown.
                           inputs:
                             - step: brown over medium-high 3–5 min. per batch
                               detail: 2 batches, single layer, undisturbed
+                              info: Brown the squash in two batches in a single layer, each with half the oil and a pinch of salt. If there isn't room for the second batch, set the first aside on a plate and return it before adding the butter.
                               inputs:
                                 - { amount: 1 Tbs., ingredient: neutral oil (canola or grapeseed) }
-                                - { amount: 1 to 1-1/2 lb., ingredient: "butternut, honeynut, acorn or delicata squash", prep: "peeled if desired, halved, seeded, sliced 1/4-inch thick crosswise" }
+                                - { amount: 1 to 1-1/2 lb., ingredient: "butternut, honeynut, acorn or delicata squash", prep: "peeled if desired, halved, seeded, sliced 1/4-inch thick crosswise", info: Chickpeas or carrot can stand in for the squash. }
                                 - { ingredient: kosher salt, prep: to taste }
                             - { amount: 6 Tbs., ingredient: unsalted butter, prep: sliced }
-                        - { amount: 1-1/4 tsp., ingredient: garam masala }
+                        - { amount: 1-1/4 tsp., ingredient: garam masala, info: "Another nutty spice works too: five spice, turmeric with chile powder, or cinnamon with crushed fennel seeds." }
                         - { amount: 1/2 tsp., ingredient: red-pepper flakes }
                     - { amount: 1 Tbs., ingredient: cold water (or an ice cube) }
                 - step: drain
@@ -46,8 +44,8 @@ recipe:
                               inputs:
                                 - { ingredient: kosher salt }
                                 - { ingredient: water, prep: large pot }
-                            - { amount: 1 lb., ingredient: whole-wheat spaghetti or linguine }
-                        - { amount: 1 bunch, ingredient: Tuscan kale, prep: "ribs removed, leaves torn or coarsely chopped" }
+                            - { amount: 1 lb., ingredient: whole-wheat spaghetti or linguine, info: Regular pasta works in place of whole-wheat. }
+                        - { amount: 1 bunch, ingredient: Tuscan kale, prep: "ribs removed, leaves torn or coarsely chopped", info: "Brussels sprouts, broccolini or mature spinach can stand in for the kale." }
             - { amount: 1 tsp., ingredient: lemon zest, prep: finely grated }
             - { amount: 2 Tbs., ingredient: lemon juice (from 1 lemon) }
         - { ingredient: lemon juice, prep: to taste }
