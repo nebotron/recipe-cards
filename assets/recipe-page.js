@@ -16,6 +16,18 @@
     d.textContent = s;
     return d.innerHTML;
   }
+  // Keep the screen on while a recipe is showing. The browser drops the lock
+  // whenever the tab is hidden, so take it again when the tab comes back.
+  function keepAwake() {
+    if (!("wakeLock" in navigator)) return;
+    function request() {
+      if (document.visibilityState === "visible") {
+        navigator.wakeLock.request("screen").catch(function () {});
+      }
+    }
+    request();
+    document.addEventListener("visibilitychange", request);
+  }
   fetch(root + "recipes/" + slug + ".yaml").then(function (r) {
     if (r.status === 404) throw new Error("No recipe named \"" + slug + "\".");
     if (!r.ok) throw new Error("recipes/" + slug + ".yaml: HTTP " + r.status);
@@ -34,6 +46,7 @@
       html += "<p class=\"source\">Source: " + src + "</p>";
     }
     card.innerHTML = html;
+    keepAwake();
   }).catch(function (e) {
     card.innerHTML = "<p class=\"error\">" + esc(e.message) + "</p>";
   });
