@@ -51,10 +51,22 @@
       });
   }
 
-  function ingredientText(node, scale) {
-    var text = [scaleText(node.amount, scale), node.ingredient].filter(Boolean).join(" ");
-    if (node.prep) text += ", " + node.prep;
-    return text;
+  // The amount's leading quantity, if it converts to other units, becomes a
+  // tappable button that shows the conversions (see recipe-page.js).
+  function amountHtml(amount) {
+    var q = window.Units && Units.parse(amount);
+    if (!q) return esc(amount);
+    var text = String(amount);
+    return "<button type=\"button\" class=\"qty\" data-qty=\"" + esc(q.text) + "\">" + esc(q.text) + "</button>" +
+      esc(text.slice(text.indexOf(q.text) + q.text.length));
+  }
+
+  function ingredientHtml(node, scale) {
+    var amount = scaleText(node.amount, scale);
+    var html = [amount != null && amount !== "" ? amountHtml(amount) : "", esc(node.ingredient)]
+      .filter(Boolean).join(" ");
+    if (node.prep) html += ", " + esc(node.prep);
+    return html;
   }
 
   // Annotate each node with col, rows (leaf count) and firstRow.
@@ -112,7 +124,7 @@
             infoButton(c.node.info) +
             (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") + "</td>";
         } else {
-          html += "<td class=\"i\"" + attrs + ">" + esc(ingredientText(c.node, scale)) + infoButton(c.node.info) + "</td>";
+          html += "<td class=\"i\"" + attrs + ">" + ingredientHtml(c.node, scale) + infoButton(c.node.info) + "</td>";
         }
       });
       html += "</tr>";

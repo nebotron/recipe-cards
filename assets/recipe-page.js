@@ -29,16 +29,25 @@
     document.addEventListener("visibilitychange", request);
   }
   // Info buttons in the table carry their text in data-info; tapping one shows
-  // it in a popup. Tapping outside the popup, or its close button, dismisses it.
+  // it in a popup. Tapping a quantity (data-qty) shows it in other units.
+  // Tapping outside the popup, or its close button, dismisses it.
   function showInfoOnTap() {
     var dialog = document.createElement("dialog");
     dialog.className = "info-popup";
-    dialog.innerHTML = "<p></p><form method=\"dialog\"><button>Close</button></form>";
+    dialog.innerHTML = "<div class=\"body\"></div><form method=\"dialog\"><button>Close</button></form>";
     document.body.appendChild(dialog);
+    var body = dialog.querySelector(".body");
     card.addEventListener("click", function (e) {
-      var button = e.target.closest("button.info");
+      var button = e.target.closest("button.info, button.qty");
       if (!button) return;
-      dialog.querySelector("p").textContent = button.getAttribute("data-info");
+      if (button.classList.contains("info")) {
+        body.innerHTML = "<p>" + esc(button.getAttribute("data-info")) + "</p>";
+      } else {
+        var qty = button.getAttribute("data-qty");
+        body.innerHTML = "<p class=\"qty-from\">" + esc(qty) + " =</p><ul class=\"conversions\">" +
+          Units.convert(Units.parse(qty)).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") +
+          "</ul>";
+      }
       dialog.showModal();
     });
     dialog.addEventListener("click", function (e) {
