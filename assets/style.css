@@ -93,3 +93,17 @@ ul.recipes { padding-left: 20px; }
   .source { font-size: 14px; overflow-wrap: anywhere; }
   button.info { font-size: 13px; }
 }
+.scale { margin: 0 0 8px; color: var(--muted); }
+.scale button {
+  font: inherit;
+  min-width: 2.6em;
+  padding: 3px 6px;
+  color: var(--fg);
+  background: var(--cell);
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+.scale button[aria-pressed="true"] { background: var(--action); font-weight: bold; }
+@media (max-width: 640px) {
+  .scale button { padding: 6px 8px; }
+}

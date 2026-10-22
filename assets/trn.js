@@ -23,8 +23,36 @@
       esc(info) + "\">i</button>" : "";
   }
 
-  function ingredientText(node) {
-    var text = [node.amount, node.ingredient].filter(Boolean).join(" ");
+  // Formats n as a mixed number in eighths or thirds ("1-1/2", "2/3"), the way
+  // the cards write amounts, falling back to a decimal.
+  function formatQty(n) {
+    var whole = Math.floor(n + 1e-9), frac = n - whole;
+    var best = null;
+    [2, 3, 4, 8].forEach(function (d) {
+      var k = Math.round(frac * d);
+      if (!best && Math.abs(frac - k / d) < 0.02) best = [k, d];
+    });
+    if (!best) return String(Math.round(n * 100) / 100);
+    if (best[0] === best[1]) { whole++; best[0] = 0; }
+    if (!best[0]) return String(whole);
+    return (whole ? whole + "-" : "") + best[0] + "/" + best[1];
+  }
+
+  // Multiplies each quantity in text by scale: whole numbers, decimals,
+  // fractions and mixed numbers like "1-1/2". A number joined to a unit by a
+  // hyphen ("8-oz. packages") is a size, not a count, so it stays as is.
+  function scaleText(text, scale) {
+    if (scale === 1 || text == null) return text;
+    return String(text).replace(/(\d+-)?(\d+(?:\.\d+)?)(?:\/(\d+))?(?![\d.\/]|-[a-z])/gi,
+      function (m, whole, num, den, offset, str) {
+        if (/[\d.\/-]/.test(str.charAt(offset - 1) || "")) return m;
+        var n = (whole ? parseInt(whole, 10) : 0) + (den ? num / den : parseFloat(num));
+        return formatQty(n * scale);
+      });
+  }
+
+  function ingredientText(node, scale) {
+    var text = [scaleText(node.amount, scale), node.ingredient].filter(Boolean).join(" ");
     if (node.prep) text += ", " + node.prep;
     return text;
   }
@@ -53,7 +81,9 @@
     return leaf;
   }
 
-  function render(recipe) {
+  // scale (default 1) multiplies ingredient amounts and the yield.
+  function render(recipe, scale) {
+    scale = scale || 1;
     if (!recipe || !recipe.recipe) throw new Error("missing top-level 'recipe'");
     var cells = [];
     cells.leafCount = 0;
@@ -70,7 +100,7 @@
     cells.forEach(function (c) { byRow[c.firstRow].push(c); });
 
     var html = "<table class=\"trn\"><tr><th colspan=\"" + (root.col + 1) + "\">" + esc(recipe.title || "") +
-      (recipe.yield ? " <span class=\"yield\">(" + esc(recipe.yield) + ")</span>" : "") +
+      (recipe.yield ? " <span class=\"yield\">(" + esc(scaleText(recipe.yield, scale)) + ")</span>" : "") +
       infoButton(recipe.info) + "</th></tr>";
     byRow.forEach(function (row) {
       row.sort(function (a, b) { return a.col - b.col; });
@@ -82,7 +112,7 @@
             infoButton(c.node.info) +
             (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") + "</td>";
         } else {
-          html += "<td class=\"i\"" + attrs + ">" + esc(ingredientText(c.node)) + infoButton(c.node.info) + "</td>";
+          html += "<td class=\"i\"" + attrs + ">" + esc(ingredientText(c.node, scale)) + infoButton(c.node.info) + "</td>";
         }
       });
       html += "</tr>";
@@ -91,5 +121,5 @@
     return html;
   }
 
-  window.TRN = { render: render };
+  window.TRN = { render: render, scaleText: scaleText };
 })();

@@ -45,6 +45,31 @@
       if (e.target === dialog) dialog.close();
     });
   }
+  var SCALES = [[0.5, "\u00bd\u00d7"], [1, "1\u00d7"], [1.5, "1\u00bd\u00d7"], [2, "2\u00d7"], [3, "3\u00d7"]];
+  // The scale buttons multiply every amount and the yield, then re-render the
+  // table. The chosen scale stays in the URL (?x=2) so a reload keeps it.
+  function scaleOnTap(data) {
+    var table = card.querySelector(".table");
+    var buttons = card.querySelectorAll(".scale button");
+    function apply(scale) {
+      table.innerHTML = TRN.render(data, scale);
+      buttons.forEach(function (b) {
+        b.setAttribute("aria-pressed", String(Number(b.getAttribute("data-scale")) === scale));
+      });
+    }
+    card.querySelector(".scale").addEventListener("click", function (e) {
+      var button = e.target.closest("button");
+      if (!button) return;
+      var scale = Number(button.getAttribute("data-scale"));
+      var params = new URLSearchParams(location.search);
+      if (scale === 1) params.delete("x"); else params.set("x", scale);
+      var query = params.toString();
+      history.replaceState(null, "", location.pathname + (query ? "?" + query : "") + location.hash);
+      apply(scale);
+    });
+    var initial = Number(new URLSearchParams(location.search).get("x"));
+    apply(initial > 0 ? initial : 1);
+  }
   fetch(root + "recipes/" + slug + ".yaml").then(function (r) {
     if (r.status === 404) throw new Error("No recipe named \"" + slug + "\".");
     if (!r.ok) throw new Error("recipes/" + slug + ".yaml: HTTP " + r.status);
@@ -53,13 +78,17 @@
     var data = jsyaml.load(text);
     Recent.touch(slug);
     document.title = data.title || slug;
-    var html = TRN.render(data);
+    var html = "<div class=\"scale\" role=\"group\" aria-label=\"Scale recipe\">Scale:" +
+      SCALES.map(function (x) {
+        return " <button type=\"button\" data-scale=\"" + x[0] + "\">" + x[1] + "</button>";
+      }).join("") + "</div><div class=\"table\"></div>";
     if (data.source) {
       var src = /^https?:\/\//.test(data.source)
         ? "<a href=\"" + esc(data.source) + "\">" + esc(data.source) + "</a>" : esc(data.source);
       html += "<p class=\"source\">Source: " + src + "</p>";
     }
     card.innerHTML = html;
+    scaleOnTap(data);
     showInfoOnTap();
     keepAwake();
   }).catch(function (e) {
