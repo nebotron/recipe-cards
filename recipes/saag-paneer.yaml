@@ -13,13 +13,13 @@ recipe:
       inputs:
         - step: toss and marinate
           inputs:
+            - { amount: 12 oz., ingredient: paneer (or tofu), prep: cubed }
             - step: mix
               inputs:
                 - { amount: 1 tsp., ingredient: turmeric }
                 - { amount: 1/2 tsp., ingredient: cayenne }
                 - { amount: 1 tsp., ingredient: salt }
                 - { amount: 3 Tbs., ingredient: vegetable oil }
-            - { amount: 12 oz., ingredient: paneer (or tofu), prep: cubed }
     - step: mix
       inputs:
         - step: stir; heat through 10–15 min.

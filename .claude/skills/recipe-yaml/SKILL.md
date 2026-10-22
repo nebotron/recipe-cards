@@ -36,6 +36,14 @@ Rules:
   split it.
 - Put the step result that the new ingredients are added to *first* in
   `inputs`, then the new ingredients in the order the recipe adds them.
+- When the same ingredient appears more than once (a split as above), try to
+  order the tree so its rows in the left-hand ingredient column sit next to
+  each other, so the amounts are easy to add up. Ingredients within one step
+  can be listed in any order, and the step-result-first rule can bend here:
+  an ingredient may come before a step result in `inputs` if that puts the
+  repeats together. Sibling branches can also swap order. Check the
+  validator's printed tree. Branches can't always line up every repeat, so
+  group the ones that matter most, such as measured amounts over "to taste".
 - Keep step labels short and imperative, like "mix", "simmer 20 min." or
   "350°F for 25 min.". Put the secondary detail in `detail`. Include times
   and temperatures in the label.
