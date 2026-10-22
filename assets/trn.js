@@ -61,12 +61,14 @@
       esc(text.slice(text.indexOf(q.text) + q.text.length));
   }
 
+  // The amount and name lead the cell; the amount never breaks across lines.
+  // Prep goes on its own smaller line below, like a step's detail, so long
+  // prep notes wrap within the cell instead of widening the table.
   function ingredientHtml(node, scale) {
     var amount = scaleText(node.amount, scale);
-    var html = [amount != null && amount !== "" ? amountHtml(amount) : "", esc(node.ingredient)]
-      .filter(Boolean).join(" ");
-    if (node.prep) html += ", " + esc(node.prep);
-    return html;
+    return (amount != null && amount !== "" ? "<span class=\"amt\">" + amountHtml(amount) + "</span> " : "") +
+      esc(node.ingredient) + infoButton(node.info) +
+      (node.prep ? "<div class=\"detail\">" + esc(node.prep) + "</div>" : "");
   }
 
   // Annotate each node with col, rows (leaf count) and firstRow.
@@ -124,7 +126,7 @@
             infoButton(c.node.info) +
             (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") + "</td>";
         } else {
-          html += "<td class=\"i\"" + attrs + ">" + ingredientHtml(c.node, scale) + infoButton(c.node.info) + "</td>";
+          html += "<td class=\"i\"" + attrs + ">" + ingredientHtml(c.node, scale) + "</td>";
         }
       });
       html += "</tr>";

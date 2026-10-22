@@ -38,9 +38,10 @@ table.trn th {
 }
 table.trn th .yield { font-weight: normal; font-size: 13px; }
 table.trn td { border: 1px solid var(--line); padding: 4px 8px; vertical-align: middle; }
-table.trn td.i { background: var(--cell); white-space: nowrap; }
+table.trn td.i { background: var(--cell); min-width: 8em; max-width: 15em; }
+table.trn td.i .amt { white-space: nowrap; }
 table.trn td.a { background: var(--action); text-align: center; max-width: 11em; }
-table.trn td.a .detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+table.trn td .detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
 button.info {
   font: italic bold 11px Georgia, serif;
   width: 1.6em;
@@ -99,7 +100,7 @@ ul.recipes { padding-left: 20px; }
   .back a, ul.recipes a { display: inline-block; padding: 6px 0; }
   table.trn { font-size: 13px; }
   table.trn td { padding: 4px 6px; }
-  table.trn td.i { white-space: normal; min-width: 7em; }
+  table.trn td.i { min-width: 7em; max-width: 11em; }
   table.trn td.a { max-width: 8em; }
   .source { font-size: 14px; overflow-wrap: anywhere; }
   button.info { font-size: 13px; }
