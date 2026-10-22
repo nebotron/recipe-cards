@@ -1,0 +1,46 @@
+:root {
+  --fg: #111;
+  --muted: #555;
+  --bg: #fff;
+  --cell: #fff;
+  --action: #e6e6e6;
+  --line: #000;
+  --link: #1a4fa0;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #eee;
+    --muted: #aaa;
+    --bg: #161616;
+    --cell: #1f1f1f;
+    --action: #333;
+    --line: #888;
+    --link: #8ab4f8;
+  }
+}
+body {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 13px;
+  color: var(--fg);
+  background: var(--bg);
+  margin: 24px 16px;
+}
+a { color: var(--link); }
+h1 { font-size: 20px; }
+.wrap { overflow-x: auto; }
+table.trn { border-collapse: collapse; border: 2px solid var(--line); }
+table.trn th {
+  font-size: 15px;
+  text-align: left;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  background: var(--cell);
+}
+table.trn th .yield { font-weight: normal; font-size: 13px; }
+table.trn td { border: 1px solid var(--line); padding: 4px 8px; vertical-align: middle; }
+table.trn td.i { background: var(--cell); white-space: nowrap; }
+table.trn td.a { background: var(--action); text-align: center; max-width: 11em; }
+table.trn td.a .detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.notes, .source { font-size: 12px; color: var(--muted); max-width: 60em; }
+.error { color: #c00; white-space: pre-wrap; }
+ul.recipes li { margin: 4px 0; }

@@ -1,0 +1,4 @@
+title: Recipe Cards
+exclude:
+  - scripts
+  - README.md

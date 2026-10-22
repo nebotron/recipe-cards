@@ -1,0 +1,44 @@
+title: Saag Paneer
+notes:
+  - The 4.5 Tbs. of vegetable oil is split, with 3 Tbs. for the paneer marinade and 1-1/2 Tbs. for sautéing the aromatics.
+
+# The recipe is a tree. The root is the final step. Each step lists its
+# inputs in table order (top to bottom), and each input is either an
+# ingredient or an earlier step.
+recipe:
+  step: add paneer
+  inputs:
+    - step: brown over medium-high heat
+      detail: remove from pan
+      inputs:
+        - step: toss and marinate
+          inputs:
+            - step: mix
+              inputs:
+                - { amount: 1 tsp., ingredient: turmeric }
+                - { amount: 1/2 tsp., ingredient: cayenne }
+                - { amount: 1 tsp., ingredient: salt }
+                - { amount: 3 Tbs., ingredient: vegetable oil }
+            - { amount: 12 oz., ingredient: paneer (or tofu), prep: cubed }
+    - step: mix
+      inputs:
+        - step: stir; heat through 10–15 min.
+          inputs:
+            - step: mix
+              inputs:
+                - step: cook and stir 3–5 min.
+                  inputs:
+                    - step: sauté in same pan until soft and golden
+                      detail: add a few Tbs. water if drying out
+                      inputs:
+                        - { amount: 1-1/2 Tbs., ingredient: vegetable oil }
+                        - { amount: 1, ingredient: white onion, prep: diced }
+                        - { amount: 1 Tbs., ingredient: ginger, prep: diced }
+                        - { amount: 4 cloves, ingredient: garlic, prep: diced }
+                    - { amount: 1/2 tsp., ingredient: garam masala }
+                    - { amount: 2 tsp., ingredient: coriander }
+                    - { amount: 1 tsp., ingredient: cumin }
+                - { amount: 1 lb., ingredient: frozen spinach }
+            - { ingredient: salt, prep: to taste }
+            - { amount: 1/2 cup, ingredient: water }
+        - { amount: 1/2 cup, ingredient: yogurt }

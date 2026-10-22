@@ -1,0 +1,31 @@
+---
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recipe Cards</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<h1>Recipe Cards</h1>
+<ul class="recipes">
+{%- for file in site.static_files -%}
+  {%- if file.path contains '/recipes/' and file.extname == '.yaml' %}
+  <li><a href="recipe.html?r={{ file.basename }}" data-yaml="recipes/{{ file.name }}">{{ file.basename | replace: '-', ' ' | capitalize }}</a></li>
+  {%- endif -%}
+{%- endfor %}
+</ul>
+<script src="assets/js-yaml.min.js"></script>
+<script>
+  // Replace slug-based link text with each recipe's real title.
+  document.querySelectorAll("a[data-yaml]").forEach(function (a) {
+    fetch(a.dataset.yaml).then(function (r) { return r.text(); }).then(function (text) {
+      var data = jsyaml.load(text);
+      if (data && data.title) a.textContent = data.title;
+    }).catch(function () {});
+  });
+</script>
+</body>
+</html>
