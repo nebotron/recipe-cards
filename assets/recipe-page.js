@@ -54,6 +54,25 @@
       if (e.target === dialog) dialog.close();
     });
   }
+  // Tapping an ingredient or step cell marks it done (or not done again). The
+  // marks are kept by cell position, so they survive re-rendering on rescale.
+  var done = {};
+  function markDone() {
+    card.querySelectorAll("table.trn td").forEach(function (td, i) {
+      td.setAttribute("data-cell", i);
+      td.classList.toggle("done", !!done[i]);
+    });
+  }
+  function doneOnTap() {
+    card.addEventListener("click", function (e) {
+      if (e.target.closest("button, a")) return;
+      var td = e.target.closest("table.trn td");
+      if (!td) return;
+      var i = td.getAttribute("data-cell");
+      done[i] = !done[i];
+      td.classList.toggle("done", done[i]);
+    });
+  }
   var SCALES = [[0.5, "\u00bd\u00d7"], [1, "1\u00d7"], [1.5, "1\u00bd\u00d7"], [2, "2\u00d7"], [3, "3\u00d7"]];
   // The scale buttons multiply every amount and the yield, then re-render the
   // table. The chosen scale stays in the URL (?x=2) so a reload keeps it.
@@ -62,6 +81,7 @@
     var buttons = card.querySelectorAll(".scale button");
     function apply(scale) {
       table.innerHTML = TRN.render(data, scale);
+      markDone();
       buttons.forEach(function (b) {
         b.setAttribute("aria-pressed", String(Number(b.getAttribute("data-scale")) === scale));
       });
@@ -98,6 +118,7 @@
     }
     card.innerHTML = html;
     scaleOnTap(data);
+    doneOnTap();
     showInfoOnTap();
     keepAwake();
   }).catch(function (e) {
