@@ -10,22 +10,71 @@
 </head>
 <body>
 <h1>Recipe Cards</h1>
-<ul class="recipes">
+<input id="search" class="search" type="search" placeholder="Search recipes or ingredients" autocomplete="off" autofocus>
+<ul id="recipes" class="recipes">
 {%- for file in site.static_files -%}
   {%- if file.path contains '/recipes/' and file.extname == '.yaml' %}
-  <li><a href="recipe.html?r={{ file.basename }}" data-yaml="recipes/{{ file.name }}">{{ file.basename | replace: '-', ' ' | capitalize }}</a></li>
+  <li data-slug="{{ file.basename }}"><a href="recipe.html?r={{ file.basename }}">{{ file.basename | replace: '-', ' ' | capitalize }}</a></li>
   {%- endif -%}
 {%- endfor %}
 </ul>
+<p id="empty" class="muted" hidden>No matching recipes.</p>
 <script src="assets/js-yaml.min.js"></script>
+<script src="assets/recent.js"></script>
 <script>
-  // Replace slug-based link text with each recipe's real title.
-  document.querySelectorAll("a[data-yaml]").forEach(function (a) {
-    fetch(a.dataset.yaml).then(function (r) { return r.text(); }).then(function (text) {
-      var data = jsyaml.load(text);
-      if (data && data.title) a.textContent = data.title;
-    }).catch(function () {});
-  });
+  (function () {
+    var list = document.getElementById("recipes");
+    var search = document.getElementById("search");
+    var empty = document.getElementById("empty");
+    var items = Array.prototype.slice.call(list.children);
+    var times = Recent.load();
+
+    // Collect every ingredient name in the recipe tree for searching.
+    function ingredients(node, out) {
+      if (!node || typeof node !== "object") return out;
+      if (node.ingredient) out.push(node.ingredient);
+      (node.inputs || []).forEach(function (n) { ingredients(n, out); });
+      return out;
+    }
+
+    // Most recently accessed first; never-opened recipes after, by title.
+    function sort() {
+      items.sort(function (a, b) {
+        var ta = times[a.dataset.slug] || 0, tb = times[b.dataset.slug] || 0;
+        return tb - ta || a.textContent.localeCompare(b.textContent);
+      });
+      items.forEach(function (li) { list.appendChild(li); });
+    }
+
+    function filter() {
+      var terms = search.value.toLowerCase().split(/\s+/).filter(Boolean);
+      var shown = 0;
+      items.forEach(function (li) {
+        var text = li.dataset.search || li.textContent.toLowerCase();
+        var match = terms.every(function (t) { return text.indexOf(t) !== -1; });
+        li.hidden = !match;
+        if (match) shown++;
+      });
+      empty.hidden = shown > 0;
+    }
+
+    search.addEventListener("input", filter);
+    sort();
+    filter();
+
+    // Replace slug-based link text with each recipe's real title, and index
+    // its ingredients for search.
+    items.forEach(function (li) {
+      fetch("recipes/" + li.dataset.slug + ".yaml").then(function (r) { return r.text(); }).then(function (text) {
+        var data = jsyaml.load(text) || {};
+        var a = li.querySelector("a");
+        if (data.title) a.textContent = data.title;
+        li.dataset.search = [a.textContent].concat(ingredients(data.recipe, [])).join(" ").toLowerCase();
+        sort();
+        filter();
+      }).catch(function () {});
+    });
+  })();
 </script>
 </body>
 </html>

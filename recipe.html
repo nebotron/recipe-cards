@@ -11,6 +11,7 @@
 <div id="card" class="wrap"></div>
 <script src="assets/js-yaml.min.js"></script>
 <script src="assets/trn.js"></script>
+<script src="assets/recent.js"></script>
 <script>
   (function () {
     var card = document.getElementById("card");
@@ -29,6 +30,7 @@
       return r.text();
     }).then(function (text) {
       var data = jsyaml.load(text);
+      Recent.touch(slug);
       document.title = data.title || slug;
       var html = TRN.render(data);
       if (data.notes && data.notes.length) {

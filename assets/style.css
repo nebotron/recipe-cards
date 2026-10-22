@@ -44,3 +44,15 @@ table.trn td.a .detail { font-size: 11px; color: var(--muted); margin-top: 2px; 
 .notes, .source { font-size: 12px; color: var(--muted); max-width: 60em; }
 .error { color: #c00; white-space: pre-wrap; }
 ul.recipes li { margin: 4px 0; }
+.search {
+  font: inherit;
+  width: 100%;
+  max-width: 28em;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  color: var(--fg);
+  background: var(--cell);
+  border: 1px solid var(--line);
+}
+ul.recipes { padding-left: 20px; }
+.muted { color: var(--muted); }
