@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<p><a href="./">&larr; All recipes</a></p>
+<p class="back"><a href="./">&larr; All recipes</a></p>
 <div id="card" class="wrap"></div>
 <script src="assets/js-yaml.min.js"></script>
 <script src="assets/trn.js"></script>
@@ -25,6 +25,15 @@
       d.textContent = s;
       return d.innerHTML;
     }
+    function savedView() {
+      try { return localStorage.getItem("view"); } catch (e) { return null; }
+    }
+    function setView(view) {
+      card.dataset.view = view;
+      card.querySelectorAll(".view-toggle button").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b.dataset.view === view));
+      });
+    }
     fetch("recipes/" + slug + ".yaml").then(function (r) {
       if (!r.ok) throw new Error("recipes/" + slug + ".yaml: HTTP " + r.status);
       return r.text();
@@ -32,7 +41,10 @@
       var data = jsyaml.load(text);
       Recent.touch(slug);
       document.title = data.title || slug;
-      var html = TRN.render(data);
+      var html = "<div class=\"view-toggle\" role=\"group\" aria-label=\"View\">" +
+        "<button type=\"button\" data-view=\"steps\">Steps</button>" +
+        "<button type=\"button\" data-view=\"table\">Table</button></div>" +
+        "<div class=\"table-view\">" + TRN.render(data) + "</div>" + TRN.renderSteps(data);
       if (data.notes && data.notes.length) {
         html += "<div class=\"notes\"><p>" + data.notes.map(esc).join("</p><p>") + "</p></div>";
       }
@@ -42,6 +54,13 @@
         html += "<p class=\"source\">Source: " + src + "</p>";
       }
       card.innerHTML = html;
+      setView(savedView() || (matchMedia("(max-width: 640px)").matches ? "steps" : "table"));
+      card.querySelectorAll(".view-toggle button").forEach(function (b) {
+        b.addEventListener("click", function () {
+          setView(b.dataset.view);
+          try { localStorage.setItem("view", b.dataset.view); } catch (e) {}
+        });
+      });
     }).catch(function (e) {
       card.innerHTML = "<p class=\"error\">" + esc(e.message) + "</p>";
     });
