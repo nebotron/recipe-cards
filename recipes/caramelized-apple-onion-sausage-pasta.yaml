@@ -1,0 +1,50 @@
+title: Caramelized Apple, Onion & Sausage Pasta
+yield: 6 servings
+info: Active time 55 minutes. Total time 55 minutes.
+
+recipe:
+  step: top and serve
+  inputs:
+    - step: stir 2–3 min.
+      detail: until cheese melts and pasta is lightly coated
+      info: If needed, add the remaining 3/4 cup reserved cooking water, 1/4 cup at a time, to reach the sauce consistency you want.
+      inputs:
+        - step: brown over medium-high 6–10 min.
+          detail: break into small pieces; remove with slotted spoon
+          inputs:
+            - { amount: 1 Tbs., ingredient: olive oil }
+            - { amount: 16 oz., ingredient: bulk pork sausage }
+        - step: stir ~1 min.
+          inputs:
+            - { amount: 3 cloves, ingredient: garlic, prep: finely chopped (about 1 Tbs.) }
+            - { amount: 2 tsp., ingredient: fresh thyme, prep: finely chopped }
+            - step: medium ~30 min., stirring occasionally
+              detail: until apples soften and onions caramelize
+              info: Add water 2 to 4 Tbs. at a time as needed to deglaze the pot and keep the browned bits from burning.
+              inputs:
+                - step: melt over medium ~1 min.
+                  detail: in same pot
+                  inputs:
+                    - { amount: 1/4 cup (1/2 stick), ingredient: unsalted butter }
+                - { amount: 6 cups, ingredient: red onions, prep: sliced (from 3 onions) }
+                - { amount: 3 cups, ingredient: "Granny Smith, Golden Delicious, or Honeycrisp apples", prep: 1/4-in. pieces (from 2 apples) }
+                - { ingredient: water, prep: as needed }
+                - { amount: 1/2 tsp., ingredient: kosher salt }
+        - { amount: 1-1/2 tsp., ingredient: kosher salt }
+        - step: drain
+          detail: reserve 1 cup cooking water
+          inputs:
+            - step: cook 1 min. less than al dente
+              detail: per package directions
+              inputs:
+                - step: bring to a boil
+                  inputs:
+                    - { ingredient: kosher salt }
+                    - { ingredient: water, prep: large pot }
+                - { amount: 16 oz., ingredient: campanelle or penne pasta }
+        - { amount: 3/4 cup, ingredient: chicken broth }
+        - { amount: 1/2 cup, ingredient: Parmesan cheese, prep: finely grated }
+        - { amount: 2 tsp., ingredient: apple cider vinegar }
+        - { amount: 1/2 tsp., ingredient: black pepper, prep: freshly ground }
+    - { ingredient: fresh thyme, prep: "chopped, for garnish" }
+    - { ingredient: Parmesan cheese, prep: "grated, for garnish" }
