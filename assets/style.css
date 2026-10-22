@@ -121,3 +121,16 @@ ul.recipes { padding-left: 20px; }
 @media (max-width: 640px) {
   .scale button { padding: 6px 8px; }
 }
+div.share { margin: 0 0 8px; }
+button.share {
+  font: inherit;
+  padding: 3px 8px;
+  color: var(--fg);
+  background: var(--cell);
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+.share-status { color: var(--muted); }
+@media (max-width: 640px) {
+  button.share { padding: 6px 10px; }
+}
