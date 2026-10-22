@@ -83,46 +83,5 @@
     return html;
   }
 
-  // Renders the same tree as a numbered list of steps, for narrow screens.
-  // Steps are numbered in the order they are done (post-order), and a step
-  // that feeds into a later one is referenced by its number.
-  function renderSteps(recipe) {
-    if (!recipe || !recipe.recipe) throw new Error("missing top-level 'recipe'");
-    var steps = [];
-    var ingredients = [];
-    function walk(node) {
-      if (!isStep(node)) {
-        ingredients.push(node);
-        return { ingredient: node };
-      }
-      var inputs = (node.inputs || []).map(walk);
-      steps.push({ node: node, inputs: inputs });
-      return { stepNum: steps.length, node: node };
-    }
-    walk(recipe.recipe);
-
-    var html = "<div class=\"steps-view\"><h2>" + esc(recipe.title || "") +
-      (recipe.yield ? " <span class=\"yield\">(" + esc(recipe.yield) + ")</span>" : "") + "</h2>";
-    html += "<h3>Ingredients</h3><ul class=\"ingredients\">";
-    ingredients.forEach(function (n) { html += "<li>" + esc(ingredientText(n)) + "</li>"; });
-    html += "</ul><h3>Steps</h3><ol class=\"steps\">";
-    steps.forEach(function (s, i) {
-      html += "<li id=\"step-" + (i + 1) + "\"><div class=\"label\">" + esc(s.node.step) + "</div>";
-      if (s.node.detail) html += "<div class=\"detail\">" + esc(s.node.detail) + "</div>";
-      html += "<ul class=\"inputs\">";
-      s.inputs.forEach(function (inp) {
-        if (inp.ingredient) {
-          html += "<li>" + esc(ingredientText(inp.ingredient)) + "</li>";
-        } else {
-          html += "<li class=\"ref\"><a href=\"#step-" + inp.stepNum + "\">Step " + inp.stepNum + "</a> (" +
-            esc(inp.node.step) + ")</li>";
-        }
-      });
-      html += "</ul></li>";
-    });
-    html += "</ol></div>";
-    return html;
-  }
-
-  window.TRN = { render: render, renderSteps: renderSteps };
+  window.TRN = { render: render };
 })();
