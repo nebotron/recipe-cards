@@ -6,7 +6,7 @@ description: Convert a recipe into a YAML recipe card for this repo's site (tabu
 # Recipe to YAML
 
 Turn a recipe into `recipes/<slug>.yaml`. The site renders that file as a
-tabular recipe notation table at `recipe.html?r=<slug>`.
+tabular recipe notation table at `/recipe-cards/<slug>`.
 
 ## 1. Read the source
 
@@ -91,7 +91,7 @@ See `recipes/saag-paneer.yaml` for a complete example.
    errors and prints the tree, so you can check that each ingredient is
    under the right step. Fix and re-run until it passes.
 3. Optionally preview it with `python3 -m http.server` from the repo root,
-   then open `http://localhost:8000/recipe.html?r=<slug>`. The index page
-   needs Jekyll, so it only lists recipes on GitHub Pages.
+   then open `http://localhost:8000/recipe.html?r=<slug>`. The index page and
+   `/recipe-cards/<slug>` URLs need Jekyll, so they only work on GitHub Pages.
 4. Tell the user the file path. Mention any readings you guessed and any
    ingredients you split.

@@ -7,7 +7,9 @@ with GitHub Pages.
 - `recipes/*.yaml`: one file per recipe. See `.claude/skills/recipe-yaml/SKILL.md`
   for the schema.
 - `index.html`: lists every recipe (built by GitHub Pages' Jekyll).
-- `recipe.html?r=<slug>`: renders `recipes/<slug>.yaml` in the browser.
+- `/recipe-cards/<slug>`: renders `recipes/<slug>.yaml` in the browser. GitHub
+  Pages serves `404.html` for these paths, which reads the slug from the URL.
+  `recipe.html?r=<slug>` renders the same card on any static server.
 - `scripts/validate.py`: checks recipe files (`pip install pyyaml`).
 
 ## Adding a recipe

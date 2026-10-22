@@ -14,7 +14,7 @@
 <ul id="recipes" class="recipes">
 {%- for file in site.static_files -%}
   {%- if file.path contains '/recipes/' and file.extname == '.yaml' %}
-  <li data-slug="{{ file.basename }}"><a href="recipe.html?r={{ file.basename }}">{{ file.basename | replace: '-', ' ' | capitalize }}</a></li>
+  <li data-slug="{{ file.basename }}"><a href="{{ file.basename }}">{{ file.basename | replace: '-', ' ' | capitalize }}</a></li>
   {%- endif -%}
 {%- endfor %}
 </ul>
