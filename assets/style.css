@@ -49,19 +49,16 @@ table.trn td { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 table.trn td.done { background: var(--done); color: var(--done-fg); }
 table.trn td.done .detail { color: inherit; }
 table.trn td .detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
-button.info {
-  font: italic bold 11px Georgia, serif;
-  width: 1.6em;
-  height: 1.6em;
-  padding: 0;
-  margin-left: 2px;
-  vertical-align: 1px;
-  color: var(--link);
-  background: var(--cell);
-  border: 1px solid var(--link);
-  border-radius: 50%;
-  cursor: pointer;
+table.trn .note {
+  font-size: 11px;
+  font-style: italic;
+  font-weight: normal;
+  color: var(--muted);
+  margin-top: 4px;
 }
+table.trn td.done .note { color: inherit; }
+/* The title row's note wraps to the table's width instead of widening it. */
+table.trn th .note { font-size: 12px; width: 0; min-width: 100%; }
 button.qty {
   font: inherit;
   padding: 0;
@@ -80,7 +77,6 @@ dialog.info-popup {
   border: 2px solid var(--line);
 }
 dialog.info-popup::backdrop { background: rgba(0, 0, 0, 0.4); }
-dialog.info-popup p { margin: 0 0 12px; line-height: 1.4; }
 dialog.info-popup .qty-from { font-weight: bold; margin-bottom: 6px; }
 dialog.info-popup ul.conversions { margin: 0 0 12px; padding-left: 20px; line-height: 1.6; }
 dialog.info-popup form { text-align: right; }
@@ -110,7 +106,6 @@ ul.recipes { padding-left: 20px; }
   table.trn td.i { min-width: 7em; max-width: 11em; }
   table.trn td.a { max-width: 8em; }
   .source { font-size: 14px; overflow-wrap: anywhere; }
-  button.info { font-size: 13px; }
 }
 .scale { margin: 0 0 8px; color: var(--muted); }
 .scale button {

@@ -85,10 +85,10 @@ of information on the step or ingredient it is about:
 - **Short** (a few words): put it in the table text itself, as a step's
   `detail` or an ingredient's `prep`.
 - **Long** (tips, substitutions, warnings, a sentence or more): put it in
-  `info` on that step or ingredient. It shows as a small "i" button that
-  opens a popup when tapped.
+  `info` on that step or ingredient. It shows inline in the same cell, as a
+  smaller italic note below the label.
 - Information about the whole recipe (author, total time, what was left
-  out) goes in the top-level `info`, which puts the button in the title row.
+  out) goes in the top-level `info`, which shows under the title.
 
 Don't state the obvious. Leave out anything a cook can read off the table:
 that an ingredient is split across steps (the repeated rows show it), that
@@ -103,11 +103,11 @@ choices made about the source.
 title: Lemon Bars              # required
 yield: 32 bars                 # optional
 source: https://example.com/x  # optional: URL, book, or person
-info: Whole-recipe note, in a popup from the title row.  # optional
+info: Whole-recipe note, shown under the title.  # optional
 recipe:                        # required; must be a step (the final one)
   step: cool and cut           # short label shown in the cell
   detail: optional smaller text shown under the label
-  info: optional longer text, shown in a popup when tapped
+  info: optional longer text, shown as a note in the cell
   inputs:                      # required, non-empty, in table order
     - step: 350°F for 20 min.
       inputs:
@@ -117,7 +117,7 @@ recipe:                        # required; must be a step (the final one)
 ```
 
 Ingredient keys: `ingredient` (required), `amount`, `prep`, `info`. They
-render as "amount ingredient, prep" plus an info button. Step keys: `step`,
+render as "amount ingredient, prep" with any info note below. Step keys: `step`,
 `inputs`, `detail`, `info`. Top-level keys: `title`, `yield`, `source`,
 `info`, `recipe`. No other keys are allowed.
 
@@ -126,7 +126,7 @@ Quote values that contain `: ` or start with a YAML special character.
 
 See `recipes/saag-paneer.yaml` for a complete example, and
 `recipes/pasta-with-butternut-squash-kale-and-brown-butter.yaml` for `info`
-popups.
+notes.
 
 ## 4. Save and check
 

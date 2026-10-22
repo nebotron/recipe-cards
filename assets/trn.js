@@ -17,10 +17,9 @@
     return node && typeof node === "object" && "step" in node;
   }
 
-  // A tappable "i" that opens the longer note in a popup (see recipe-page.js).
-  function infoButton(info) {
-    return info ? " <button type=\"button\" class=\"info\" aria-label=\"More info\" data-info=\"" +
-      esc(info) + "\">i</button>" : "";
+  // A longer note shown inline at the bottom of its cell.
+  function infoHtml(info) {
+    return info ? "<div class=\"note\">" + esc(info) + "</div>" : "";
   }
 
   // Formats n as a mixed number in eighths or thirds ("1-1/2", "2/3"), the way
@@ -67,8 +66,9 @@
   function ingredientHtml(node, scale) {
     var amount = scaleText(node.amount, scale);
     return (amount != null && amount !== "" ? "<span class=\"amt\">" + amountHtml(amount) + "</span> " : "") +
-      esc(node.ingredient) + infoButton(node.info) +
-      (node.prep ? "<div class=\"detail\">" + esc(node.prep) + "</div>" : "");
+      esc(node.ingredient) +
+      (node.prep ? "<div class=\"detail\">" + esc(node.prep) + "</div>" : "") +
+      infoHtml(node.info);
   }
 
   // Annotate each node with col, rows (leaf count) and firstRow.
@@ -115,7 +115,7 @@
 
     var html = "<table class=\"trn\"><tr><th colspan=\"" + (root.col + 1) + "\">" + esc(recipe.title || "") +
       (recipe.yield ? " <span class=\"yield\">(" + esc(scaleText(recipe.yield, scale)) + ")</span>" : "") +
-      infoButton(recipe.info) + "</th></tr>";
+      infoHtml(recipe.info) + "</th></tr>";
     byRow.forEach(function (row) {
       row.sort(function (a, b) { return a.col - b.col; });
       html += "<tr>";
@@ -123,8 +123,8 @@
         var attrs = (c.rows > 1 ? " rowspan=\"" + c.rows + "\"" : "") + (c.span > 1 ? " colspan=\"" + c.span + "\"" : "");
         if (isStep(c.node)) {
           html += "<td class=\"a\"" + attrs + ">" + esc(c.node.step) +
-            infoButton(c.node.info) +
-            (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") + "</td>";
+            (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") +
+            infoHtml(c.node.info) + "</td>";
         } else {
           html += "<td class=\"i\"" + attrs + ">" + ingredientHtml(c.node, scale) + "</td>";
         }
