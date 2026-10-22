@@ -47,8 +47,8 @@ recipe:
                                     - { amount: 1-1/2 cup, ingredient: canned solid pack pumpkin }
                                     - { amount: 1 tsp., ingredient: ground cinnamon }
                                     - { amount: 1 tsp., ingredient: ground allspice, prep: "or 1/2 tsp. each ground cloves, ginger, and nutmeg" }
-                                    - { amount: 4 Tbs., ingredient: whipping cream, info: "The recipe uses 9 Tbs. whipping cream in all: 4 Tbs. in the filling and 5 Tbs. in the topping." }
+                                    - { amount: 4 Tbs., ingredient: whipping cream }
         - step: stir to combine
           inputs:
-            - { amount: 5 Tbs., ingredient: whipping cream, info: "The recipe uses 9 Tbs. whipping cream in all: 4 Tbs. in the filling and 5 Tbs. in the topping." }
-            - { amount: 3/4 cup, ingredient: reserved cream cheese mixture, prep: brought to room temperature, info: "3/4 cup of the beaten cream cheese and sugar, set aside and chilled before the pumpkin goes in." }
+            - { amount: 5 Tbs., ingredient: whipping cream }
+            - { amount: 3/4 cup, ingredient: reserved cream cheese mixture, prep: brought to room temperature }

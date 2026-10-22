@@ -90,6 +90,13 @@ of information on the step or ingredient it is about:
 - Information about the whole recipe (author, total time, what was left
   out) goes in the top-level `info`, which puts the button in the title row.
 
+Don't state the obvious. Leave out anything a cook can read off the table:
+that an ingredient is split across steps (the repeated rows show it), that
+a reserved mixture comes from the step that reserves it, totals, or a
+restatement of a step's label or detail. Add `info` only for things the
+table doesn't already show, such as tips, substitutions, warnings, and
+choices made about the source.
+
 ## 3. Schema
 
 ```yaml
