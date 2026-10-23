@@ -22,6 +22,9 @@
     --done-fg: #9fc9a5;
   }
 }
+/* Stop mobile browsers (iOS Safari especially) from inflating the text of
+   some table cells and not others, which made ingredient sizes uneven. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   font-family: Verdana, Arial, sans-serif;
   font-size: 13px;
