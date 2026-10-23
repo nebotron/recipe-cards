@@ -25,7 +25,7 @@ recipe:
                                     - step: mix
                                       detail: dump onto a work surface
                                       inputs:
-                                        - { amount: 2 cups (9 oz.), ingredient: flour }
+                                        - { amount: 2 cups, ingredient: flour }
                                         - { amount: 5 Tbs., ingredient: sugar }
                                         - { amount: 1 Tbs., ingredient: baking powder }
                                         - { amount: 1/2 tsp., ingredient: salt }
@@ -35,5 +35,5 @@ recipe:
                             - { amount: 1, ingredient: egg }
                             - { amount: 1/2 cup, ingredient: cream }
                     - { amount: 1/2 cup, ingredient: dried currants }
-        - { amount: 1 Tbs., ingredient: cream, info: "The method says to brush with milk, but the ingredient list's glaze uses 1 Tbs. cream. The card follows the ingredient list." }
+        - { amount: 1 Tbs., ingredient: cream }
         - { ingredient: sparkly sugar }
