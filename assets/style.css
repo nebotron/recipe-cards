@@ -134,3 +134,5 @@ button.copy {
 @media (max-width: 640px) {
   button.copy { padding: 6px 10px; }
 }
+
+.footer { margin-top: 2em; font-size: 13px; }
