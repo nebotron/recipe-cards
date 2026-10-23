@@ -145,7 +145,7 @@
     var initial = Number(new URLSearchParams(location.search).get("x"));
     apply(initial > 0 ? initial : 1);
   }
-  fetch(root + "recipes/" + slug + ".yaml").then(function (r) {
+  fetch(root + "recipes/" + slug + ".yaml", { cache: "no-store" }).then(function (r) {
     if (r.status === 404) throw new Error("No recipe named \"" + slug + "\".");
     if (!r.ok) throw new Error("recipes/" + slug + ".yaml: HTTP " + r.status);
     return r.text();

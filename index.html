@@ -22,6 +22,7 @@
 </ul>
 <p id="empty" class="muted" hidden>No matching recipes.</p>
 <footer class="footer muted"><a href="https://github.com/nebotron/recipe-cards">Source on GitHub</a></footer>
+<script src="assets/fresh.js"></script>
 <script src="assets/js-yaml.min.js"></script>
 <script src="assets/recent.js"></script>
 <script>
@@ -68,7 +69,7 @@
     // Replace slug-based link text with each recipe's real title, and index
     // its ingredients for search.
     items.forEach(function (li) {
-      fetch("recipes/" + li.dataset.slug + ".yaml").then(function (r) { return r.text(); }).then(function (text) {
+      fetch("recipes/" + li.dataset.slug + ".yaml", { cache: "no-store" }).then(function (r) { return r.text(); }).then(function (text) {
         var data = jsyaml.load(text) || {};
         var a = li.querySelector("a");
         if (data.title) a.textContent = data.title;
