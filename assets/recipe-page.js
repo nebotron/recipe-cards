@@ -69,27 +69,31 @@
     });
   }
   // The shopping list: one line per ingredient, "amount ingredient", at the
-  // current scale. Prep is left off, since it's about cooking, not buying. An
-  // ingredient split across steps is listed once with its amounts joined.
+  // current scale. Ingredients marked done are left out. Prep is left off,
+  // since it's about cooking, not buying. An ingredient split across steps is
+  // listed once with its amounts joined.
   function shoppingList(data, scale) {
-    var items = [], byName = {};
+    // Each ingredient has its own row, in the same depth-first order as the
+    // tree, so the nth ingredient cell belongs to the nth ingredient.
+    var cells = card.querySelectorAll("table.trn td.i");
+    var items = [], byName = {}, n = 0;
     (function walk(node) {
       if (node.inputs) { node.inputs.forEach(walk); return; }
+      if (cells[n++].classList.contains("done")) return;
       var name = String(node.ingredient), key = name.toLowerCase();
       if (!byName[key]) { byName[key] = { name: name, amounts: [] }; items.push(byName[key]); }
       if (node.amount != null && node.amount !== "") byName[key].amounts.push(TRN.scaleText(node.amount, scale));
     })(data.recipe);
     return items.map(function (it) {
       return (it.amounts.length ? it.amounts.join(" + ") + " " : "") + it.name;
-    }).join("\n");
+    });
   }
-  // The share button hands the shopping list to the phone's share sheet, so it
-  // can go straight to a list app like AnyList, which adds each line as its
-  // own item. Only the list is shared, not the title, so the title doesn't
-  // become an item too. Without the share sheet, it copies the list instead.
-  function shareOnTap(data, getScale) {
-    var button = card.querySelector("button.share");
-    var status = card.querySelector(".share-status");
+  // The copy button puts the shopping list on the clipboard, one item per
+  // line, so it can be pasted into a list app like AnyList, which adds each
+  // line as its own item.
+  function copyOnTap(data, getScale) {
+    var button = card.querySelector("button.copy");
+    var status = card.querySelector(".copy-status");
     function say(msg) {
       status.textContent = msg;
       clearTimeout(say.timer);
@@ -106,13 +110,11 @@
       return ok ? Promise.resolve() : Promise.reject(new Error("copy failed"));
     }
     button.addEventListener("click", function () {
-      var text = shoppingList(data, getScale());
-      var shared = navigator.share && (!navigator.canShare || navigator.canShare({ text: text }))
-        ? navigator.share({ text: text }).catch(function (e) {
-          if (e.name !== "AbortError") return copy(text).then(function () { say("Copied ingredients"); });
-        })
-        : copy(text).then(function () { say("Copied ingredients"); });
-      shared.catch(function () { say("Couldn't share or copy"); });
+      var items = shoppingList(data, getScale());
+      if (!items.length) { say("Every ingredient is marked done"); return; }
+      copy(items.join("\n")).then(function () {
+        say("Copied " + items.length + (items.length === 1 ? " ingredient" : " ingredients"));
+      }, function () { say("Couldn't copy"); });
     });
   }
   var SCALES = [[0.5, "\u00bd\u00d7"], [1, "1\u00d7"], [1.5, "1\u00bd\u00d7"], [2, "2\u00d7"], [3, "3\u00d7"]];
@@ -154,8 +156,8 @@
     var html = "<div class=\"scale\" role=\"group\" aria-label=\"Scale recipe\">Scale:" +
       SCALES.map(function (x) {
         return " <button type=\"button\" data-scale=\"" + x[0] + "\">" + x[1] + "</button>";
-      }).join("") + "</div><div class=\"share\"><button type=\"button\" class=\"share\">" +
-      "Share ingredients</button> <span class=\"share-status\" role=\"status\"></span></div>" +
+      }).join("") + "</div><div class=\"copy\"><button type=\"button\" class=\"copy\">" +
+      "Copy ingredients</button> <span class=\"copy-status\" role=\"status\"></span></div>" +
       "<div class=\"table\"></div>";
     if (data.source) {
       var src = /^https?:\/\//.test(data.source)
@@ -164,7 +166,7 @@
     }
     card.innerHTML = html;
     scaleOnTap(data);
-    shareOnTap(data, function () { return currentScale; });
+    copyOnTap(data, function () { return currentScale; });
     doneOnTap();
     showConversionsOnTap();
     keepAwake();
