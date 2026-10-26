@@ -3,12 +3,12 @@ title: Kale Salad with Cilantro Dressing
 recipe:
   step: toss
   inputs:
-    - step: add to kale
+    - step: mix
       inputs:
         - { amount: 1 bunch, ingredient: kale, prep: stems removed }
-        - { amount: 5 oz., ingredient: parmesan, prep: grated }
+        - { amount: 5 oz., ingredient: parmesan }
         - { amount: 5 oz., ingredient: slivered almonds }
-    - step: blend in
+    - step: blend
       inputs:
         - step: blend
           inputs:
