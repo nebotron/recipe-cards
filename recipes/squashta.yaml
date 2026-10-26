@@ -1,0 +1,52 @@
+title: Squashta
+yield: 3 decent servings or 2 hungry servings
+source: Jordie
+
+recipe:
+  step: serve
+  info: If you like, top with extra cheese, black pepper, chili flakes or chili oil.
+  inputs:
+    - step: fold once more
+      inputs:
+        - step: keep folding; turn off heat
+          detail: add pasta water as needed until the texture seems right
+          inputs:
+            - step: fold together
+              detail: with a bit more pasta water
+              inputs:
+                - step: fold together
+                  detail: with some pasta water
+                  inputs:
+                    - step: turn heat down
+                      detail: until the pasta is ready
+                      inputs:
+                        - step: cook a couple min. until fragrant
+                          detail: in a space cleared in the middle of the pan
+                          inputs:
+                            - step: cook a couple min. until translucent
+                              detail: in a space cleared in the middle of the pan
+                              inputs:
+                                - step: sauté until liquid cooks off and squash browns a bit
+                                  detail: not too hot, or the oil turns bitter
+                                  info: "Takes some time. A dutch oven works well, but any pan big enough to mix in the pasta is fine."
+                                  inputs:
+                                    - { ingredient: olive oil, prep: ample, info: Splitting oil and butter is good too. }
+                                    - { amount: 2-4, ingredient: summer squashes, prep: "halved or quartered lengthwise, sliced 1-4 mm thick into bite-size pieces", info: "Depending on size. Can't really have too much." }
+                                    - { ingredient: black pepper }
+                                    - { ingredient: chili flakes }
+                                    - { ingredient: salt, info: "Ideally ~60% celery salt / 40% MSG, but any salt works fine." }
+                                - { ingredient: salt, prep: a bit more }
+                                - { amount: 1/2 to 1, ingredient: shallot, prep: optional }
+                            - { amount: 1-3 cloves, ingredient: garlic, prep: thinly sliced or minced }
+                            - { ingredient: white pepper }
+                            - { ingredient: "oregano, thyme, tarragon and/or rosemary", info: "Dealer's choice. Fresh herbs work too." }
+                    - step: drain
+                      detail: reserve plenty of pasta water
+                      inputs:
+                        - step: cook to 1 min. short of al dente
+                          inputs:
+                            - { amount: 1 lb., ingredient: Barilla protein pasta, info: "Usually spaghetti, but anything works." }
+                - { amount: 1/2 to 2/3 cup, ingredient: Parmesan and/or pecorino, prep: grated, info: "To taste, but don't be shy; more is fine." }
+                - { ingredient: Italian flat-leaf parsley, prep: optional }
+        - { ingredient: zest of 1 lemon }
+        - { ingredient: lemon juice, prep: "to taste, up to 1/2 lemon" }
