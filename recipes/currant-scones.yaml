@@ -1,39 +1,31 @@
 title: Currant Scones
 yield: 8 scones
+
 recipe:
   step: 375°F for 15–16 min.
-  detail: on an oiled baking sheet, until golden on top
-  info: While baking, keep an oven-proof dish with 1/4 cup water on the bottom rack of the oven.
+  detail: until golden on top
   inputs:
     - step: brush and sprinkle
       inputs:
         - step: pat into a disc; cut into 8
           inputs:
-            - step: letter fold in each direction
+            - step: mix
               inputs:
-                - step: add
+                - step: mix
                   inputs:
-                    - step: fold in liquid
+                    - step: mix
                       inputs:
-                        - step: chill 30 min.
+                        - step: mix
                           inputs:
-                            - step: roll flat, push together; 3 times
-                              detail: flatten the butter with a rolling pin
-                              inputs:
-                                - step: toss
-                                  inputs:
-                                    - step: mix
-                                      detail: dump onto a work surface
-                                      inputs:
-                                        - { amount: 2 cups, ingredient: flour }
-                                        - { amount: 5 Tbs., ingredient: sugar }
-                                        - { amount: 1 Tbs., ingredient: baking powder }
-                                        - { amount: 1/2 tsp., ingredient: salt }
-                                    - { amount: 1 stick, ingredient: butter, prep: cut into 16 pieces }
-                        - step: whisk
-                          inputs:
-                            - { amount: 1, ingredient: egg }
-                            - { amount: 1/2 cup, ingredient: cream }
-                    - { amount: 1/2 cup, ingredient: dried currants }
+                            - { amount: 2 cups, ingredient: flour }
+                            - { amount: 5 Tbs., ingredient: sugar }
+                            - { amount: 1 Tbs., ingredient: baking powder }
+                            - { amount: 1/2 tsp., ingredient: salt }
+                        - { amount: 1 stick, ingredient: butter, prep: cut into 16 pieces }
+                    - step: whisk
+                      inputs:
+                        - { amount: 1, ingredient: egg }
+                        - { amount: 1/2 cup, ingredient: cream }
+                - { amount: 1/2 cup, ingredient: dried currants }
         - { amount: 1 Tbs., ingredient: cream }
-        - { ingredient: sparkly sugar }
+        - { amount: 1 Tbs., ingredient: sugar }
