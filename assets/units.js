@@ -1,5 +1,6 @@
 // Parses recipe amounts like "1-1/2 cup" or "1 to 1-1/2 lb." and converts
-// them to other units of the same kind (volume or weight).
+// them to other units of the same kind (volume or weight), and, for common
+// ingredients with a known density, between volume and weight.
 (function () {
   // Each unit's size in ml (volume) or g (weight).
   var UNITS = {
@@ -30,6 +31,63 @@
   };
   // Units to offer for each kind, in display order.
   var TARGETS = { volume: ["tsp", "tbs", "cup", "floz", "ml", "l"], weight: ["oz", "lb", "g", "kg"] };
+
+  // Grams per cup of common ingredients, from King Arthur Baking's ingredient
+  // weight chart. The first entry whose pattern matches the ingredient name
+  // wins, so more specific names come first ("brown sugar" before "sugar").
+  // name is the chart's row; per is the chart's volume, to cite it as listed.
+  var SOURCE = "https://www.kingarthurbaking.com/learn/ingredient-weight-chart";
+  var CUP = 236.588;
+  var DENSITIES = [
+    [/\bbuttermilk\b/, "buttermilk", 227, "1 cup"],
+    [/\bpeanut butter\b/, "peanut butter", 135, "1/2 cup"],
+    [/\bbutter\b/, "butter", 113, "1/2 cup"],
+    [/\bcream cheese\b/, null],
+    [/\bsour cream\b/, "sour cream", 227, "1 cup"],
+    [/\b(heavy |light |whipping )?cream\b|\bhalf[- &and]+half\b/, "cream", 227, "1 cup"],
+    [/\bevaporated milk\b/, "evaporated milk", 113, "1/2 cup"],
+    [/\bmilk\b/, "milk", 227, "1 cup"],
+    [/\byogh?urt\b/, "yogurt", 227, "1 cup"],
+    [/\bwater\b/, "water", 227, "1 cup"],
+    [/\bolive oil\b/, "olive oil", 50, "1/4 cup"],
+    [/\b(vegetable|canola|neutral|grapeseed|sunflower|corn) oil\b/, "vegetable oil", 198, "1 cup"],
+    [/\bhoney\b/, "honey", 21, "1 Tbs."],
+    [/\bmaple syrup\b/, "maple syrup", 156, "1/2 cup"],
+    [/\bmolasses\b/, "molasses", 85, "1/4 cup"],
+    [/\bbrown sugar\b/, "brown sugar (packed)", 213, "1 cup"],
+    [/\b(confectioners'?|powdered|icing) sugar\b/, "confectioners' sugar", 113, "1 cup"],
+    [/^(granulated |white |cane )?sugar\b/, "granulated sugar", 198, "1 cup"],
+    [/\bwhole[- ]wheat flour\b/, "whole wheat flour", 113, "1 cup"],
+    [/^(all-purpose |unbleached |bread |cake )*flour\b/, "all-purpose flour", 120, "1 cup"],
+    [/\bcocoa\b/, "cocoa (unsweetened)", 42, "1/2 cup"],
+    [/\bcornstarch\b/, "cornstarch", 28, "1/4 cup"],
+    [/\bpolenta\b/, "polenta", 163, "1 cup"],
+    [/\bcornmeal\b/, "cornmeal", 138, "1 cup"],
+    [/\b(rolled|old-fashioned|quick) oats\b|^oats\b/, "oats (old-fashioned)", 89, "1 cup"],
+    [/\bmorton\b.*\bsalt\b|\bsalt\b.*\bmorton\b/, "kosher salt (Morton's)", 16, "1 Tbs."],
+    [/\bkosher salt\b/, "kosher salt (Diamond Crystal)", 8, "1 Tbs."],
+    [/^(table |fine )?salt\b/, "table salt", 18, "1 Tbs."],
+    [/\bbaking powder\b/, "baking powder", 4, "1 tsp."],
+    [/\bbaking soda\b/, "baking soda", 3, "1/2 tsp."],
+    [/\bparmesan\b/, "grated Parmesan", 50, "1/2 cup"],
+    [/\bmini chocolate chips\b/, "mini chocolate chips", 177, "1 cup"],
+    [/\bchocolate chips\b/, "chocolate chips", 170, "1 cup"]
+  ];
+  var PER = { "1 cup": 1, "1/2 cup": 1 / 2, "1/4 cup": 1 / 4, "1 Tbs.": 1 / 16, "1 tsp.": 1 / 48, "1/2 tsp.": 1 / 96 };
+
+  // Returns { name, gramsPerMl, basis, source } for an ingredient name, or
+  // null if its density isn't known. basis is the chart's figure, e.g.
+  // "1 cup = 120 g".
+  function density(ingredient) {
+    var name = String(ingredient || "").toLowerCase().trim();
+    for (var i = 0; i < DENSITIES.length; i++) {
+      var d = DENSITIES[i];
+      if (!d[0].test(name)) continue;
+      if (!d[1]) return null;
+      return { name: d[1], gramsPerMl: d[2] / (PER[d[3]] * CUP), basis: d[3] + " = " + d[2] + " g", source: SOURCE };
+    }
+    return null;
+  }
 
   var NUM = "(\\d+(?:-\\d+/\\d+|/\\d+|\\.\\d+)?)";
   var AMOUNT = new RegExp("^\\s*" + NUM + "(?:\\s*(?:to|–|-)\\s*" + NUM + ")?\\s*(fl\\.? oz|[a-z]+)\\.?(?=$|[\\s(,])", "i");
@@ -89,26 +147,35 @@
   }
 
   // Lists the amount in every other unit of its kind that reads sensibly.
-  function convert(q) {
+  // Given a density from density(), lists it in units of the other kind
+  // (weight for a volume, volume for a weight) instead. Those are always
+  // marked approximate, since how an ingredient packs varies.
+  function convert(q, dens) {
     var from = UNITS[q.unit];
     var values = q.high == null ? [q.low] : [q.low, q.high];
+    var kind = from.kind, factor = 1;
+    if (dens) {
+      kind = from.kind === "volume" ? "weight" : "volume";
+      factor = from.kind === "volume" ? dens.gramsPerMl : 1 / dens.gramsPerMl;
+    }
     var out = [];
-    TARGETS[from.kind].forEach(function (key) {
-      if (key === q.unit) return;
+    TARGETS[kind].forEach(function (key) {
+      // Fluid ounces of a weighed ingredient read too much like ounces.
+      if (key === q.unit || (dens && key === "floz")) return;
       var u = UNITS[key];
-      var parts = [], approx = false;
+      var parts = [], approx = !!dens;
       for (var i = 0; i < values.length; i++) {
-        var x = values[i] * from.size / u.size, text = format(x, u);
+        var x = values[i] * from.size * factor / u.size, text = format(x, u);
         if (text == null) return;
         if (Math.abs(round(x, u) - x) > x * 0.02) approx = true;
         parts.push(text);
       }
-      var last = values[values.length - 1] * from.size / u.size;
+      var last = values[values.length - 1] * from.size * factor / u.size;
       var label = u.plural && round(last, u) > 1 ? u.plural : u.label;
       out.push((approx ? "≈ " : "") + parts.join("–") + " " + label);
     });
     return out;
   }
 
-  window.Units = { parse: parse, convert: convert };
+  window.Units = { parse: parse, convert: convert, density: density };
 })();

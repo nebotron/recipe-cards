@@ -13,6 +13,11 @@ with GitHub Pages.
 - **Copy ingredients** on a card copies the shopping list (at the current
   scale, one item per line, skipping ingredients marked done) to paste into
   a list app like AnyList.
+- Tapping an amount shows it in other units. For common ingredients (water,
+  milk, flour, sugar, butter, salt, …) it also converts between volume and
+  weight, using densities from King Arthur Baking's
+  [ingredient weight chart](https://www.kingarthurbaking.com/learn/ingredient-weight-chart)
+  (`DENSITIES` in `assets/units.js`).
 - `scripts/validate.py`: checks recipe files (`pip install pyyaml`).
 
 ## Adding a recipe

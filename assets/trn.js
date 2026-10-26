@@ -51,12 +51,13 @@
   }
 
   // The amount's leading quantity, if it converts to other units, becomes a
-  // tappable button that shows the conversions (see recipe-page.js).
-  function amountHtml(amount) {
+  // tappable button that shows the conversions (see recipe-page.js). The
+  // ingredient name goes along so the popup can convert volume to weight.
+  function amountHtml(amount, ingredient) {
     var q = window.Units && Units.parse(amount);
     if (!q) return esc(amount);
     var text = String(amount);
-    return "<button type=\"button\" class=\"qty\" data-qty=\"" + esc(q.text) + "\">" + esc(q.text) + "</button>" +
+    return "<button type=\"button\" class=\"qty\" data-qty=\"" + esc(q.text) + "\" data-ingredient=\"" + esc(ingredient) + "\">" + esc(q.text) + "</button>" +
       esc(text.slice(text.indexOf(q.text) + q.text.length));
   }
 
@@ -65,7 +66,7 @@
   // prep notes wrap within the cell instead of widening the table.
   function ingredientHtml(node, scale) {
     var amount = scaleText(node.amount, scale);
-    return (amount != null && amount !== "" ? "<span class=\"amt\">" + amountHtml(amount) + "</span> " : "") +
+    return (amount != null && amount !== "" ? "<span class=\"amt\">" + amountHtml(amount, node.ingredient) + "</span> " : "") +
       esc(node.ingredient) +
       (node.prep ? "<div class=\"detail\">" + esc(node.prep) + "</div>" : "") +
       infoHtml(node.info);

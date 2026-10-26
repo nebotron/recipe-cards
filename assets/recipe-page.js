@@ -39,10 +39,21 @@
     card.addEventListener("click", function (e) {
       var button = e.target.closest("button.qty");
       if (!button) return;
-      var qty = button.getAttribute("data-qty");
-      body.innerHTML = "<p class=\"qty-from\">" + esc(qty) + " =</p><ul class=\"conversions\">" +
-        Units.convert(Units.parse(qty)).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") +
-        "</ul>";
+      var qty = button.getAttribute("data-qty"), q = Units.parse(qty);
+      var dens = Units.density(button.getAttribute("data-ingredient"));
+      function list(items) {
+        return "<ul class=\"conversions\">" + items.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul>";
+      }
+      var html = "<p class=\"qty-from\">" + esc(qty) + " =</p>" + list(Units.convert(q));
+      var cross = dens ? Units.convert(q, dens) : [];
+      if (cross.length) {
+        html += "<p class=\"density\">As " + (q.unit && /^(oz|lb|g|kg)$/.test(q.unit) ? "volume" : "weight") +
+          ", for " + esc(dens.name) + " (" + esc(dens.basis) + ")" +
+          " <a class=\"info\" href=\"" + esc(dens.source) + "\" target=\"_blank\" rel=\"noopener\"" +
+          " title=\"Source: King Arthur Baking ingredient weight chart\"" +
+          " aria-label=\"Source: King Arthur Baking ingredient weight chart\">i</a>:</p>" + list(cross);
+      }
+      body.innerHTML = html;
       dialog.showModal();
     });
     dialog.addEventListener("click", function (e) {
