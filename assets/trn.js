@@ -72,26 +72,28 @@
       infoHtml(node.info);
   }
 
-  // Annotate each node with col, rows (leaf count) and firstRow.
-  function measure(node, path, cells) {
+  // Annotate each node with col, rows (leaf count), firstRow and key, the
+  // node's position in the tree ("recipe.0.2" is the root's first input's
+  // third input). Cells carry the key as data-path, so a tap can find its node.
+  function measure(node, path, cells, key) {
     if (isStep(node)) {
       var inputs = node.inputs || [];
       if (!inputs.length) throw new Error("step '" + node.step + "' at " + path + " has no inputs");
       var col = 0, rows = 0;
       var children = inputs.map(function (child, i) {
-        var m = measure(child, path + ".inputs[" + i + "]", cells);
+        var m = measure(child, path + ".inputs[" + i + "]", cells, key + "." + i);
         col = Math.max(col, m.col + 1);
         rows += m.rows;
         return m;
       });
-      var cell = { node: node, col: col, rows: rows, firstRow: children[0].firstRow, children: children };
+      var cell = { node: node, key: key, col: col, rows: rows, firstRow: children[0].firstRow, children: children };
       cells.push(cell);
       return cell;
     }
     if (!node || typeof node !== "object" || !node.ingredient) {
       throw new Error("input at " + path + " must have either 'step' or 'ingredient'");
     }
-    var leaf = { node: node, col: 0, rows: 1, firstRow: cells.leafCount++, children: [] };
+    var leaf = { node: node, key: key, col: 0, rows: 1, firstRow: cells.leafCount++, children: [] };
     cells.push(leaf);
     return leaf;
   }
@@ -102,7 +104,7 @@
     if (!recipe || !recipe.recipe) throw new Error("missing top-level 'recipe'");
     var cells = [];
     cells.leafCount = 0;
-    var root = measure(recipe.recipe, "recipe", cells);
+    var root = measure(recipe.recipe, "recipe", cells, "recipe");
 
     // Set each cell's colspan from its parent's column.
     root.span = 1;
@@ -114,14 +116,14 @@
     for (var r = 0; r < cells.leafCount; r++) byRow.push([]);
     cells.forEach(function (c) { byRow[c.firstRow].push(c); });
 
-    var html = "<table class=\"trn\"><tr><th colspan=\"" + (root.col + 1) + "\">" + esc(recipe.title || "") +
+    var html = "<table class=\"trn\"><tr><th data-path=\"title\" colspan=\"" + (root.col + 1) + "\">" + esc(recipe.title || "") +
       (recipe.yield ? " <span class=\"yield\">(" + esc(scaleText(recipe.yield, scale)) + ")</span>" : "") +
       infoHtml(recipe.info) + "</th></tr>";
     byRow.forEach(function (row) {
       row.sort(function (a, b) { return a.col - b.col; });
       html += "<tr>";
       row.forEach(function (c) {
-        var attrs = (c.rows > 1 ? " rowspan=\"" + c.rows + "\"" : "") + (c.span > 1 ? " colspan=\"" + c.span + "\"" : "");
+        var attrs = " data-path=\"" + c.key + "\"" + (c.rows > 1 ? " rowspan=\"" + c.rows + "\"" : "") + (c.span > 1 ? " colspan=\"" + c.span + "\"" : "");
         if (isStep(c.node)) {
           html += "<td class=\"a\"" + attrs + ">" + esc(c.node.step) +
             (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") +

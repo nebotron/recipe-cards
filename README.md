@@ -20,6 +20,22 @@ with GitHub Pages.
   (`DENSITIES` in `assets/units.js`).
 - `scripts/validate.py`: checks recipe files (`pip install pyyaml`).
 
+## Editing on the site
+
+**Edit recipe**, under each card, edits the card in place and saves it as a
+commit to `main`. Tap a cell to change its text, or to move, add, wrap
+("Add step after this"), unwrap or delete it. **YAML** edits the whole file.
+GitHub Pages republishes a minute or so after saving.
+
+Saving needs a [fine-grained token](https://github.com/settings/personal-access-tokens/new)
+with access to only this repository and **Contents: Read and write**. The
+token stays in your browser (in `localStorage` if "Remember on this device"
+is checked, otherwise only until you leave the page) and is sent only to
+`api.github.com`. Unsaved edits are kept as a draft on the device.
+
+Saving rewrites the file in the house style (`assets/recipe-yaml.js`), so
+YAML comments are dropped.
+
 ## Adding a recipe
 
 In Claude Code, ask Claude to add a recipe and give it an image, a URL, or

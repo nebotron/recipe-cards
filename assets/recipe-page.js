@@ -11,6 +11,13 @@
     card.innerHTML = "<p class=\"error\">No recipe selected.</p>";
     return;
   }
+  // The parsed recipe. The editor (editor.js) can replace it.
+  var data;
+  // While editing, taps edit cells instead of marking them done or showing
+  // conversions.
+  function editing() {
+    return card.classList.contains("editing");
+  }
   function esc(s) {
     var d = document.createElement("div");
     d.textContent = s;
@@ -38,7 +45,7 @@
     var body = dialog.querySelector(".body");
     card.addEventListener("click", function (e) {
       var button = e.target.closest("button.qty");
-      if (!button) return;
+      if (!button || editing()) return;
       var qty = button.getAttribute("data-qty"), q = Units.parse(qty);
       var dens = Units.density(button.getAttribute("data-ingredient"));
       function list(items) {
@@ -61,20 +68,20 @@
     });
   }
   // Tapping an ingredient or step cell marks it done (or not done again). The
-  // marks are kept by cell position, so they survive re-rendering on rescale.
+  // marks are kept by the cell's place in the tree, so they survive
+  // re-rendering on rescale.
   var done = {};
   function markDone() {
-    card.querySelectorAll("table.trn td").forEach(function (td, i) {
-      td.setAttribute("data-cell", i);
-      td.classList.toggle("done", !!done[i]);
+    card.querySelectorAll("table.trn td").forEach(function (td) {
+      td.classList.toggle("done", !!done[td.getAttribute("data-path")]);
     });
   }
   function doneOnTap() {
     card.addEventListener("click", function (e) {
-      if (e.target.closest("button, a")) return;
+      if (editing() || e.target.closest("button, a")) return;
       var td = e.target.closest("table.trn td");
       if (!td) return;
-      var i = td.getAttribute("data-cell");
+      var i = td.getAttribute("data-path");
       done[i] = !done[i];
       td.classList.toggle("done", done[i]);
     });
@@ -83,7 +90,7 @@
   // current scale. Ingredients marked done are left out. Prep is left off,
   // since it's about cooking, not buying. An ingredient split across steps is
   // listed once with its amounts joined.
-  function shoppingList(data, scale) {
+  function shoppingList(scale) {
     // Each ingredient has its own row, in the same depth-first order as the
     // tree, so the nth ingredient cell belongs to the nth ingredient.
     var cells = card.querySelectorAll("table.trn td.i");
@@ -102,7 +109,7 @@
   // The copy button puts the shopping list on the clipboard, one item per
   // line, so it can be pasted into a list app like AnyList, which adds each
   // line as its own item.
-  function copyOnTap(data, getScale) {
+  function copyOnTap() {
     var button = card.querySelector("button.copy");
     var status = card.querySelector(".copy-status");
     function say(msg) {
@@ -121,66 +128,72 @@
       return ok ? Promise.resolve() : Promise.reject(new Error("copy failed"));
     }
     button.addEventListener("click", function () {
-      var items = shoppingList(data, getScale());
+      var items = shoppingList(currentScale);
       if (!items.length) { say("Every ingredient is marked done"); return; }
       copy(items.join("\n")).then(function () {
         say("Copied " + items.length + (items.length === 1 ? " ingredient" : " ingredients"));
       }, function () { say("Couldn't copy"); });
     });
   }
-  var SCALES = [[0.5, "\u00bd\u00d7"], [1, "1\u00d7"], [1.5, "1\u00bd\u00d7"], [2, "2\u00d7"], [3, "3\u00d7"]];
+  var SCALES = [[0.5, "½×"], [1, "1×"], [1.5, "1½×"], [2, "2×"], [3, "3×"]];
+  var currentScale = 1;
+  // Draws the table at the current scale, plus the title and source, from data.
+  function render() {
+    document.title = data.title || slug;
+    card.querySelector(".table").innerHTML = TRN.render(data, currentScale);
+    markDone();
+    card.querySelectorAll(".scale button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(Number(b.getAttribute("data-scale")) === currentScale));
+    });
+    var source = card.querySelector(".source");
+    source.hidden = !data.source;
+    source.innerHTML = !data.source ? "" : "Source: " + (/^https?:\/\//.test(data.source)
+      ? "<a href=\"" + esc(data.source) + "\">" + esc(data.source) + "</a>" : esc(data.source));
+  }
   // The scale buttons multiply every amount and the yield, then re-render the
   // table. The chosen scale stays in the URL (?x=2) so a reload keeps it.
-  var currentScale = 1;
-  function scaleOnTap(data) {
-    var table = card.querySelector(".table");
-    var buttons = card.querySelectorAll(".scale button");
-    function apply(scale) {
-      currentScale = scale;
-      table.innerHTML = TRN.render(data, scale);
-      markDone();
-      buttons.forEach(function (b) {
-        b.setAttribute("aria-pressed", String(Number(b.getAttribute("data-scale")) === scale));
-      });
-    }
+  function setScale(scale) {
+    var params = new URLSearchParams(location.search);
+    if (scale === 1) params.delete("x"); else params.set("x", scale);
+    var query = params.toString();
+    history.replaceState(null, "", location.pathname + (query ? "?" + query : "") + location.hash);
+    currentScale = scale;
+    render();
+  }
+  function scaleOnTap() {
     card.querySelector(".scale").addEventListener("click", function (e) {
       var button = e.target.closest("button");
-      if (!button) return;
-      var scale = Number(button.getAttribute("data-scale"));
-      var params = new URLSearchParams(location.search);
-      if (scale === 1) params.delete("x"); else params.set("x", scale);
-      var query = params.toString();
-      history.replaceState(null, "", location.pathname + (query ? "?" + query : "") + location.hash);
-      apply(scale);
+      if (button) setScale(Number(button.getAttribute("data-scale")));
     });
     var initial = Number(new URLSearchParams(location.search).get("x"));
-    apply(initial > 0 ? initial : 1);
+    currentScale = initial > 0 ? initial : 1;
   }
   fetch(root + "recipes/" + slug + ".yaml", { cache: "no-store" }).then(function (r) {
     if (r.status === 404) throw new Error("No recipe named \"" + slug + "\".");
     if (!r.ok) throw new Error("recipes/" + slug + ".yaml: HTTP " + r.status);
     return r.text();
   }).then(function (text) {
-    var data = jsyaml.load(text);
+    data = jsyaml.load(Editor.latest(slug, text));
     Recent.touch(slug);
-    document.title = data.title || slug;
-    var html = "<div class=\"scale\" role=\"group\" aria-label=\"Scale recipe\">Scale:" +
+    card.innerHTML = "<div class=\"scale\" role=\"group\" aria-label=\"Scale recipe\">Scale:" +
       SCALES.map(function (x) {
         return " <button type=\"button\" data-scale=\"" + x[0] + "\">" + x[1] + "</button>";
       }).join("") + "</div><div class=\"copy\"><button type=\"button\" class=\"copy\">" +
       "Copy ingredients</button> <span class=\"copy-status\" role=\"status\"></span></div>" +
-      "<div class=\"table\"></div>";
-    if (data.source) {
-      var src = /^https?:\/\//.test(data.source)
-        ? "<a href=\"" + esc(data.source) + "\">" + esc(data.source) + "</a>" : esc(data.source);
-      html += "<p class=\"source\">Source: " + src + "</p>";
-    }
-    card.innerHTML = html;
-    scaleOnTap(data);
-    copyOnTap(data, function () { return currentScale; });
+      "<div class=\"table\"></div><p class=\"source\"></p>";
+    scaleOnTap();
+    render();
+    copyOnTap();
     doneOnTap();
     showConversionsOnTap();
     keepAwake();
+    Editor.attach({
+      card: card,
+      slug: slug,
+      getData: function () { return data; },
+      setData: function (d) { data = d; done = {}; render(); },
+      setScale: setScale
+    });
   }).catch(function (e) {
     card.innerHTML = "<p class=\"error\">" + esc(e.message) + "</p>";
   });
