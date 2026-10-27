@@ -51,8 +51,18 @@
       function list(items) {
         return "<ul class=\"conversions\">" + items.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul>";
       }
-      var html = "<p class=\"qty-from\">" + esc(qty) + " =</p>" + list(Units.convert(q));
-      var cross = dens ? Units.convert(q, dens) : [];
+      // Amounts the recipe itself gives in other units come first, since
+      // they're exact. Computed ones skip units the recipe already gave, and
+      // a weight the recipe gave beats one estimated from density.
+      var alts = (button.getAttribute("data-alts") || "").split(";").filter(Boolean);
+      var given = alts.map(Units.parse);
+      function fresh(c) {
+        var u = Units.parse(c.replace(/^≈ /, ""));
+        return !u || !given.some(function (g) { return g.unit === u.unit; });
+      }
+      var html = "<p class=\"qty-from\">" + esc(qty) + " =</p>" + list(alts.concat(Units.convert(q).filter(fresh)));
+      var otherKind = given.some(function (g) { return g.kind !== q.kind; });
+      var cross = dens && !otherKind ? Units.convert(q, dens).filter(fresh) : [];
       if (cross.length) {
         html += "<p class=\"density\">As " + (q.unit && /^(oz|lb|g|kg)$/.test(q.unit) ? "volume" : "weight") +
           ", for " + esc(dens.name) + " (" + esc(dens.basis) + ")" +

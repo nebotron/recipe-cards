@@ -73,7 +73,10 @@ Rules:
   or "chill 1 hr.") has one input.
 - Write units the way cookingforengineers.com does: `tsp.`, `Tbs.`, `cup`,
   `oz.`, `lb.`, `g`, `mL`, and fractions like `1-1/2`. Do not invent metric
-  conversions the source doesn't give.
+  conversions the source doesn't give. When the source gives an amount in
+  several units, put the rest in parentheses, separated by semicolons:
+  `213 g (7-1/2 oz.; 1 cup)`. The card shows only one of them (volume if
+  there is one) and lists the others in the tap-for-conversions popup.
 - Do not invent ingredients, amounts, or steps. If the source is vague (for
   example "a little salt"), keep it vague (`prep: to taste`).
 

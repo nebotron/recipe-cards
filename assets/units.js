@@ -100,13 +100,14 @@
     return parseFloat(s);
   }
 
-  // Returns { text, low, high, unit } for a convertible amount, else null.
+  // Returns { text, low, high, unit, kind } for a convertible amount, else
+  // null. kind is "volume" or "weight".
   function parse(amount) {
     var m = AMOUNT.exec(String(amount || ""));
     if (!m) return null;
     var unit = ALIASES[m[3].toLowerCase().replace(/\s+/, " ")];
     if (!unit) return null;
-    return { text: m[0].trim(), low: number(m[1]), high: m[2] ? number(m[2]) : null, unit: unit };
+    return { text: m[0].trim(), low: number(m[1]), high: m[2] ? number(m[2]) : null, unit: unit, kind: UNITS[unit].kind };
   }
 
   // Nearest eighth or third, as [numerator, denominator] in lowest terms.

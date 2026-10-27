@@ -53,12 +53,28 @@
   // The amount's leading quantity, if it converts to other units, becomes a
   // tappable button that shows the conversions (see recipe-page.js). The
   // ingredient name goes along so the popup can convert volume to weight.
+  // An amount may list the same quantity in other units in parentheses, as
+  // in "213 g (7-1/2 oz.; 1 cup)". The card shows only one of them,
+  // preferring volume, and the popup lists the rest (data-alts).
   function amountHtml(amount, ingredient) {
     var q = window.Units && Units.parse(amount);
     if (!q) return esc(amount);
     var text = String(amount);
-    return "<button type=\"button\" class=\"qty\" data-qty=\"" + esc(q.text) + "\" data-ingredient=\"" + esc(ingredient) + "\">" + esc(q.text) + "</button>" +
-      esc(text.slice(text.indexOf(q.text) + q.text.length));
+    var rest = text.slice(text.indexOf(q.text) + q.text.length);
+    var alts = [q.text], shown = q;
+    var m = /^\s*\(([^)]*)\)/.exec(rest);
+    if (m) {
+      var parts = m[1].split(";").map(function (p) { return p.trim(); });
+      var parsed = parts.map(function (p) { var a = Units.parse(p); return a && a.text === p ? a : null; });
+      if (parsed.every(Boolean)) {
+        alts = alts.concat(parts);
+        rest = rest.slice(m[0].length);
+        shown = [q].concat(parsed).filter(function (a) { return a.kind === "volume"; })[0] || q;
+      }
+    }
+    var others = alts.filter(function (a) { return a !== shown.text; });
+    return "<button type=\"button\" class=\"qty\" data-qty=\"" + esc(shown.text) + "\" data-ingredient=\"" + esc(ingredient) + "\"" +
+      (others.length ? " data-alts=\"" + esc(others.join(";")) + "\"" : "") + ">" + esc(shown.text) + "</button>" + esc(rest);
   }
 
   // The amount and name lead the cell; the amount never breaks across lines.
