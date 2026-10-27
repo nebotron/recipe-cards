@@ -29,23 +29,23 @@ recipe:
                                 - step: sauté until liquid cooks off and squash browns a bit
                                   detail: not too hot, or the oil turns bitter. Takes some time. A dutch oven works well, but any pan big enough to mix in the pasta is fine.
                                   inputs:
-                                    - { ingredient: olive oil, prep: ample, info: Splitting oil and butter is good too. }
-                                    - { amount: 2-4, ingredient: summer squashes, prep: "halved or quartered lengthwise, sliced 1-4 mm thick into bite-size pieces", info: "Depending on size. Can't really have too much." }
+                                    - { amount: 2 Tbs., ingredient: olive oil, info: can use half butter }
+                                    - { amount: 2-4, ingredient: squashes, prep: sliced thin }
                                     - { ingredient: black pepper }
                                     - { ingredient: chili flakes }
                                     - { ingredient: salt, info: "Ideally ~60% celery salt / 40% MSG, but any salt works fine." }
-                                - { ingredient: salt, prep: a bit more }
-                                - { amount: 1/2 to 1, ingredient: shallot, prep: optional }
-                            - { amount: 1-3 cloves, ingredient: garlic, prep: thinly sliced or minced }
+                                - { ingredient: salt }
+                                - { amount: 1, ingredient: shallot }
+                            - { amount: 2 cloves, ingredient: garlic }
                             - { ingredient: white pepper }
-                            - { ingredient: "oregano, thyme, tarragon and/or rosemary", info: "Dealer's choice. Fresh herbs work too." }
+                            - { ingredient: "oregano, thyme, tarragon and/or rosemary", info: Dealer's choice. Fresh herbs work too. }
                     - step: drain
                       detail: reserve plenty of pasta water
                       inputs:
                         - step: cook to 1 min. short of al dente
                           inputs:
-                            - { amount: 1 lb., ingredient: Barilla protein pasta, info: "Usually spaghetti, but anything works." }
-                - { amount: 1/2 to 2/3 cup, ingredient: Parmesan and/or pecorino, prep: grated, info: "To taste, but don't be shy; more is fine." }
+                            - { amount: 1 lb., ingredient: protein pasta }
+                - { amount: 2/3 cup, ingredient: Parmesan and/or pecorino, prep: grated }
                 - { ingredient: Italian flat-leaf parsley, prep: optional }
         - { ingredient: zest of 1 lemon }
-        - { ingredient: lemon juice, prep: "to taste, up to 1/2 lemon" }
+        - { amount: 1/2 lemon, ingredient: juice }
