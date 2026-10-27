@@ -5,7 +5,7 @@ recipe:
   step: top and serve
   inputs:
     - step: stir 2–3 min.
-      detail: until cheese melts and pasta is lightly coated. If needed, add the remaining 3/4 cup reserved cooking water, 1/4 cup at a time, to reach the sauce consistency you want.
+      detail: until cheese melts. Add pasta water as needed.
       inputs:
         - step: brown over medium-high
           inputs:
@@ -20,24 +20,24 @@ recipe:
               inputs:
                 - step: melt
                   inputs:
-                    - { amount: 1/4 cup (1/2 stick), ingredient: unsalted butter }
-                - { amount: 6 cups, ingredient: red onions, prep: sliced (from 3 onions) }
+                    - { amount: 1/2 stick, ingredient: butter }
+                - { amount: 3, ingredient: red onions, prep: sliced }
                 - { amount: 2, ingredient: apples, prep: 1/4-in. pieces }
                 - { amount: 1/2 tsp., ingredient: kosher salt }
         - { amount: 1-1/2 tsp., ingredient: kosher salt }
         - step: drain
-          detail: reserve 1 cup cooking water
+          detail: reserve pasta water
           inputs:
             - step: cook 1 min. less than al dente
               inputs:
                 - step: boil
                   inputs:
                     - { ingredient: kosher salt }
-                    - { ingredient: water, prep: large pot }
+                    - { ingredient: water }
                 - { amount: 16 oz., ingredient: pasta }
         - { amount: 3/4 cup, ingredient: chicken broth }
-        - { amount: 1/2 cup, ingredient: Parmesan cheese, prep: finely grated }
         - { amount: 2 tsp., ingredient: apple cider vinegar }
         - { amount: 1/2 tsp., ingredient: black pepper, prep: freshly ground }
-    - { ingredient: fresh thyme }
+        - { amount: 1/2 cup, ingredient: Parmesan cheese, prep: finely grated }
     - { ingredient: Parmesan cheese }
+    - { ingredient: fresh thyme }
