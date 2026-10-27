@@ -68,7 +68,7 @@ Rules:
   group the ones that matter most, such as measured amounts over "to taste".
 - Keep step labels short and imperative, like "mix", "simmer 20 min." or
   "350°F for 25 min.". Put the secondary detail in `detail`. Include times
-  and temperatures in the label.
+  and temperatures in the label. See "Keep it short" below.
 - A step that changes a single input (such as "brown, then remove from pan"
   or "chill 1 hr.") has one input.
 - Write units the way cookingforengineers.com does: `tsp.`, `Tbs.`, `cup`,
@@ -97,6 +97,27 @@ a reserved mixture comes from the step that reserves it, totals, or a
 restatement of a step's label or detail. Add `info` (or extra `detail` text) only for things the
 table doesn't already show, such as tips, substitutions, warnings, and
 choices made about the source.
+
+### Keep it short
+
+Use the fewest, plainest words that still tell the cook what to do. The
+table shows order and structure, so the text doesn't need to. Shorten the
+source's wording; don't copy it.
+
+- Labels: a verb plus any time or temperature. "whisk", not "whisk until
+  smooth"; "fold", not "fold together"; "medium-high", not "over
+  medium-high heat".
+- `detail`: only a cue the cook needs, such as a doneness sign, a pan, or
+  what to reserve. Cut obvious cues like "until combined" or "until
+  melted", and cut words the label already says.
+- `prep`: the shortest usual form: "diced", "grated", "1/4-in. slices".
+- `info`: one short sentence where possible. "Or chickpeas or carrots.",
+  not "Chickpeas or carrots can stand in for the squash."
+- Ingredient names: the plain name ("canned pumpkin", "neutral oil"). Keep
+  a brand or type only when it matters, like Diamond Crystal salt.
+- Abbreviate: `min.`, `hr.`, `in.`, `°F`, and `~` for "about".
+- Keep a personal recipe's voice in `info` if the user wants it, but still
+  trim it.
 
 ## 3. Schema
 
