@@ -4,7 +4,7 @@ source: Jordie
 
 recipe:
   step: serve
-  info: If you like, top with extra cheese, black pepper, chili flakes or chili oil.
+  detail: If you like, top with extra cheese, black pepper, chili flakes or chili oil.
   inputs:
     - step: fold once more
       inputs:
@@ -27,8 +27,7 @@ recipe:
                               detail: in a space cleared in the middle of the pan
                               inputs:
                                 - step: sauté until liquid cooks off and squash browns a bit
-                                  detail: not too hot, or the oil turns bitter
-                                  info: "Takes some time. A dutch oven works well, but any pan big enough to mix in the pasta is fine."
+                                  detail: not too hot, or the oil turns bitter. Takes some time. A dutch oven works well, but any pan big enough to mix in the pasta is fine.
                                   inputs:
                                     - { ingredient: olive oil, prep: ample, info: Splitting oil and butter is good too. }
                                     - { amount: 2-4, ingredient: summer squashes, prep: "halved or quartered lengthwise, sliced 1-4 mm thick into bite-size pieces", info: "Depending on size. Can't really have too much." }

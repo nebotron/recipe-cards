@@ -6,7 +6,7 @@
 // when they wouldn't read back as the same string.
 (function () {
   var TOP_KEYS = ["title", "yield", "source", "info"];
-  var STEP_KEYS = ["step", "detail", "info", "inputs"];
+  var STEP_KEYS = ["step", "detail", "inputs"];
   var INGREDIENT_KEYS = ["amount", "ingredient", "prep", "info"];
 
   function isStep(node) {
@@ -48,7 +48,7 @@
   // the prefix for its other lines.
   function writeStep(node, first, rest, out) {
     var prefix = first;
-    ["step", "detail", "info"].forEach(function (k) {
+    ["step", "detail"].forEach(function (k) {
       if (!has(node, k)) return;
       out.push(prefix + k + ": " + scalar(node[k], false));
       prefix = rest;

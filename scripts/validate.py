@@ -10,7 +10,7 @@ import sys
 import yaml
 
 TOP_KEYS = {"title", "yield", "source", "info", "recipe"}
-STEP_KEYS = {"step", "detail", "info", "inputs"}
+STEP_KEYS = {"step", "detail", "inputs"}
 INGREDIENT_KEYS = {"amount", "ingredient", "prep", "info"}
 
 
@@ -27,7 +27,7 @@ def check_node(node, path, errors, depth, lines):
         if not isinstance(inputs, list) or not inputs:
             errors.append(f"{path}: step needs a non-empty 'inputs' list")
             inputs = []
-        lines.append(f"{pad}[{node['step']}]" + (f" ({node['info']})" if node.get("info") else ""))
+        lines.append(f"{pad}[{node['step']}]" + (f" ({node['detail']})" if node.get("detail") else ""))
         for i, child in enumerate(inputs):
             check_node(child, f"{path}.inputs[{i}]", errors, depth + 1, lines)
     elif "ingredient" in node:

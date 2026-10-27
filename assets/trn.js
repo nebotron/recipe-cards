@@ -126,8 +126,7 @@
         var attrs = " data-path=\"" + c.key + "\"" + (c.rows > 1 ? " rowspan=\"" + c.rows + "\"" : "") + (c.span > 1 ? " colspan=\"" + c.span + "\"" : "");
         if (isStep(c.node)) {
           html += "<td class=\"a\"" + attrs + ">" + esc(c.node.step) +
-            (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") +
-            infoHtml(c.node.info) + "</td>";
+            (c.node.detail ? "<div class=\"detail\">" + esc(c.node.detail) + "</div>" : "") + "</td>";
         } else {
           html += "<td class=\"i\"" + attrs + ">" + ingredientHtml(c.node, scale) + "</td>";
         }

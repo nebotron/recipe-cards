@@ -82,18 +82,19 @@ Rules:
 Everything goes in the table. There is no `notes` list. Put each extra piece
 of information on the step or ingredient it is about:
 
-- **Short** (a few words): put it in the table text itself, as a step's
-  `detail` or an ingredient's `prep`.
-- **Long** (tips, substitutions, warnings, a sentence or more): put it in
-  `info` on that step or ingredient. It shows inline in the same cell, as a
-  smaller italic note below the label.
+- **On a step**: put it in the step's `detail`, short or long (conditions,
+  tips, warnings). It shows as smaller text below the label. Start with the
+  short part ("until golden") and add any longer sentences after it.
+- **On an ingredient**: short text (a few words) goes in `prep`; longer text
+  (tips, substitutions, a sentence or more) goes in `info`, shown inline in
+  the same cell as a smaller italic note below the label.
 - Information about the whole recipe (author, total time, what was left
   out) goes in the top-level `info`, which shows under the title.
 
 Don't state the obvious. Leave out anything a cook can read off the table:
 that an ingredient is split across steps (the repeated rows show it), that
 a reserved mixture comes from the step that reserves it, totals, or a
-restatement of a step's label or detail. Add `info` only for things the
+restatement of a step's label or detail. Add `info` (or extra `detail` text) only for things the
 table doesn't already show, such as tips, substitutions, warnings, and
 choices made about the source.
 
@@ -106,8 +107,7 @@ source: https://example.com/x  # optional: URL, book, or person
 info: Whole-recipe note, shown under the title.  # optional
 recipe:                        # required; must be a step (the final one)
   step: cool and cut           # short label shown in the cell
-  detail: optional smaller text shown under the label
-  info: optional longer text, shown as a note in the cell
+  detail: optional smaller text shown under the label, short or long
   inputs:                      # required, non-empty, in table order
     - step: 350°F for 20 min.
       inputs:
@@ -118,7 +118,7 @@ recipe:                        # required; must be a step (the final one)
 
 Ingredient keys: `ingredient` (required), `amount`, `prep`, `info`. They
 render as "amount ingredient, prep" with any info note below. Step keys: `step`,
-`inputs`, `detail`, `info`. Top-level keys: `title`, `yield`, `source`,
+`inputs`, `detail`. Top-level keys: `title`, `yield`, `source`,
 `info`, `recipe`. No other keys are allowed.
 
 Use flow-style `{ ... }` maps for ingredients to keep deep trees readable.

@@ -186,7 +186,7 @@
 
     var FIELDS = {
       title: [["title", "Title", true], ["yield", "Yield"], ["source", "Source (URL, book or person)"], ["info", "Note", "area"]],
-      step: [["step", "Step", true], ["detail", "Detail"], ["info", "Note", "area"]],
+      step: [["step", "Step", true], ["detail", "Detail", "area"]],
       ingredient: [["amount", "Amount"], ["ingredient", "Ingredient", true], ["prep", "Prep"], ["info", "Note", "area"]]
     };
 

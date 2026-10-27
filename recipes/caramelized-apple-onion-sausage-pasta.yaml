@@ -5,8 +5,7 @@ recipe:
   step: top and serve
   inputs:
     - step: stir 2–3 min.
-      detail: until cheese melts and pasta is lightly coated
-      info: If needed, add the remaining 3/4 cup reserved cooking water, 1/4 cup at a time, to reach the sauce consistency you want.
+      detail: until cheese melts and pasta is lightly coated. If needed, add the remaining 3/4 cup reserved cooking water, 1/4 cup at a time, to reach the sauce consistency you want.
       inputs:
         - step: brown over medium-high
           inputs:
@@ -17,8 +16,7 @@ recipe:
             - { amount: 3 cloves, ingredient: garlic }
             - { amount: 2 tsp., ingredient: fresh thyme }
             - step: medium ~30 min., stirring occasionally
-              detail: until apples soften and onions caramelize
-              info: Add a little water if it's burning
+              detail: until apples soften and onions caramelize. Add a little water if it's burning
               inputs:
                 - step: melt
                   inputs:
