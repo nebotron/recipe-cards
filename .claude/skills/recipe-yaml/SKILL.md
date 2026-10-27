@@ -107,16 +107,16 @@ source's wording; don't copy it.
 - Labels: a verb plus any time or temperature. "whisk", not "whisk until
   smooth"; "fold", not "fold together"; "medium-high", not "over
   medium-high heat".
-- `detail`: only a cue the cook needs, such as a doneness sign, a pan, or
-  what to reserve. Cut obvious cues like "until combined" or "until
-  melted", and cut words the label already says.
+- Step `detail`: only a cue the cook needs, such as a doneness sign, a pan,
+  or what to reserve, then at most a short tip. Cut obvious cues like
+  "until combined" or "until melted", and cut words the label already says.
 - `prep`: the shortest usual form: "diced", "grated", "1/4-in. slices".
-- `info`: one short sentence where possible. "Or chickpeas or carrots.",
-  not "Chickpeas or carrots can stand in for the squash."
+- Ingredient `info`: one short sentence where possible. "Or chickpeas or
+  carrots.", not "Chickpeas or carrots can stand in for the squash."
 - Ingredient names: the plain name ("canned pumpkin", "neutral oil"). Keep
   a brand or type only when it matters, like Diamond Crystal salt.
 - Abbreviate: `min.`, `hr.`, `in.`, `°F`, and `~` for "about".
-- Keep a personal recipe's voice in `info` if the user wants it, but still
+- Keep a personal recipe's voice in its notes if the user wants it, but still
   trim it.
 
 ## 3. Schema
