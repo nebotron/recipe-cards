@@ -1,0 +1,44 @@
+title: French Onion Soup
+yield: 4 to 6 servings
+source: https://cooking.nytimes.com/recipes/1017256-french-onion-soup
+info: By Sara Bonisteel for NYT Cooking, from a 1954 Times recipe. Total time 1-1/2 hr.
+
+recipe:
+  step: broil 1–2 min.
+  detail: until cheese browns; watch closely. Serve immediately.
+  inputs:
+    - step: ladle into bowls; top
+      detail: ovenproof bowls on a baking sheet
+      inputs:
+        - step: boil 10 min.
+          detail: uncovered; add stock slowly. Season to taste at the end.
+          inputs:
+            - step: stir in; thicken 1–2 min.
+              inputs:
+                - step: bring to a boil
+                  inputs:
+                    - step: uncover; caramelize 45–60 min.
+                      detail: medium heat, until golden brown; stir occasionally. Lower heat if browning too fast.
+                      inputs:
+                        - step: cover 5 min.
+                          detail: stir first
+                          inputs:
+                            - step: melt
+                              detail: Dutch oven, medium heat
+                              inputs:
+                                - { amount: 3 Tbs., ingredient: unsalted butter }
+                            - { amount: 3 to 4 large (~3 lb.), ingredient: red or yellow onions, prep: thinly sliced }
+                            - { amount: 1/2 tsp., ingredient: kosher salt }
+                    - { amount: 1 cup, ingredient: dry white wine }
+                    - { amount: 1 Tbs., ingredient: dry sherry }
+                - { amount: 1 Tbs., ingredient: all-purpose flour }
+            - step: warm
+              detail: low heat
+              inputs:
+                - { amount: 2 qt. (8 cups), ingredient: beef stock }
+            - { amount: 1/4 tsp., ingredient: kosher salt }
+            - { ingredient: kosher salt, prep: to taste }
+            - { amount: 1/2 tsp., ingredient: black pepper }
+            - { ingredient: black pepper, prep: to taste }
+        - { amount: 8 to 12 slices, ingredient: French bread, prep: 1/2-in. thick }
+        - { amount: 1-1/2 cups, ingredient: Gruyère, prep: grated }
