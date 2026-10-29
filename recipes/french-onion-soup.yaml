@@ -3,11 +3,10 @@ yield: 4 to 6 servings
 source: https://cooking.nytimes.com/recipes/1017256-french-onion-soup
 
 recipe:
-  step: broil 1–2 min.
-  detail: until cheese browns; watch closely. Serve immediately.
+  step: broil 4-8 min.
+  detail: until cheese browns
   inputs:
-    - step: ladle into bowls; top
-      detail: ovenproof bowls on a baking sheet
+    - step: pour into baking dish(es), top with bread and cheese
       inputs:
         - step: boil 10 min.
           detail: Uncovered. Season to taste
@@ -19,8 +18,7 @@ recipe:
                     - step: uncover; caramelize 45–60 min.
                       detail: medium heat, until golden brown; stir occasionally
                       inputs:
-                        - step: cover 5 min.
-                          detail: stir first
+                        - step: stir & cover 5 min.
                           inputs:
                             - step: melt
                               inputs:
